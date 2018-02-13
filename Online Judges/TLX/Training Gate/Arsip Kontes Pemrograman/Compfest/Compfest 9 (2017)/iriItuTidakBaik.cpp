@@ -14,21 +14,24 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
+const int maxn = 1e5 + 5;
+
 int main(){
-	int tc,n,m,i,j;
+	int tc,i,j,n,k;
 	scanf("%d",&tc);
-	ll sum;
+	int a[maxn];
 	while(tc--){
-		scanf("%d %d",&n,&m);
-		ll bil;
-		sum = 0;
+		scanf("%d %d",&n,&k);
+		for(i=0;i<n;i++){scanf("%d",&a[i]);}
+		sort(a,a+n);
+		int sisa = n-k;
+		int minim = a[n-1] - a[0];
 		for(i=0;i<n;i++){
-			for(j=0;j<m;j++){
-				scanf("%lld",&bil);
-				sum+=bil;
-			}
+			j = i+sisa-1;
+			if(j>=n){break;}
+			minim = min(minim,a[j] - a[i]);
 		}
-		printf("%lld\n",sum);
+		printf("%d\n",minim);
 	}
 	return 0;
 };

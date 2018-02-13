@@ -5,38 +5,47 @@ using namespace std;
 #define unvisited -1
 #define visited 1
 #define eps 1e-9
+#define mp make_pair
 #define pb push_back
+#define pi acos(-1.0)
+#define uint64 unsigned long long
 typedef long long ll;
 typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-int main() {
-	int tc,n,i,b[100010],a[100010];
+const int maxn = 1e5 + 5;
+ll dp[maxn][2];
+
+int main(){
+	int tc,i,j,k;
+	int n,b[maxn];
 	scanf("%d",&tc);
 	while(tc--){
 		scanf("%d",&n);
-		for(i=0;i<n;i++){scanf("%d",&b[i]);}
-		int maks = 0;
-		for(i=0;i<n;i+=2){
-			a[i] = b[i];
+		for(i=1;i<=n;i++){scanf("%d",&b[i]);}
+		//reset dp
+		for(i=1;i<=n;i++){
+			for(j=0;j<=1;j++){
+				dp[i][j] = 0;
+			}
 		}
-		for(i=1;i<n;i+=2){
-			a[i] = 1;
+		for(i=1;i<n;i++){
+			for(j=0;j<2;j++){
+				if(j==0){
+					dp[i+1][0] = max(dp[i+1][0], dp[i][j]);
+					dp[i+1][1] = max(dp[i+1][1], dp[i][j] + abs(1-b[i+1]));
+				}else{
+					dp[i+1][0] = max(dp[i+1][0], dp[i][j] + abs(1-b[i]));
+					dp[i+1][1] = max(dp[i+1][1], dp[i][j] + abs(b[i+1]-b[i]));
+				}		
+			}
 		}
-		int sum = 0;
-		for(i=0;i<n-1;i++){sum+=abs(a[i]-a[i+1]);}
-		maks = max(maks,sum);
-		for(i=0;i<n;i+=2){
-			a[i] = 1;
+		ll ans = 0;
+		for(j=0;j<2;j++){
+			ans = max(ans,dp[n][j]);
 		}
-		for(i=1;i<n;i+=2){
-			a[i] = b[i];
-		}
-		sum = 0;
-		for(i=0;i<n-1;i++){sum+=abs(a[i]-a[i+1]);}
-		maks = max(maks,sum);
-		printf("%d\n",maks);
+		printf("%lld\n",ans);
 	}
 	return 0;
-}
+};

@@ -15,20 +15,20 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	int tc,n,m,i,j;
+	string kata;
+	int counter[245];
+	int tc,n,i,j;
 	scanf("%d",&tc);
-	ll sum;
 	while(tc--){
-		scanf("%d %d",&n,&m);
-		ll bil;
-		sum = 0;
-		for(i=0;i<n;i++){
-			for(j=0;j<m;j++){
-				scanf("%lld",&bil);
-				sum+=bil;
-			}
+		memset(counter,0,sizeof counter);
+		scanf("%d",&n);
+		cin>>kata;
+		for(i=0;i<n;i++){counter[kata[i]]++;}
+		int maks = -1;
+		for(i=97;i<=122;i++){
+			maks = max(maks, counter[i]);
 		}
-		printf("%lld\n",sum);
+		printf("%d\n",n-maks);
 	}
 	return 0;
 };

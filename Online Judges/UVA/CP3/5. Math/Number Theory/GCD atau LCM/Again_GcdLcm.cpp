@@ -15,20 +15,19 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	int tc,n,m,i,j;
+	int tc,i,j;
+	ll a,b;
 	scanf("%d",&tc);
-	ll sum;
 	while(tc--){
-		scanf("%d %d",&n,&m);
-		ll bil;
-		sum = 0;
-		for(i=0;i<n;i++){
-			for(j=0;j<m;j++){
-				scanf("%lld",&bil);
-				sum+=bil;
-			}
+		scanf("%lld %lld",&a,&b);
+		ll gcd = __gcd(a,b);
+		ll lcm = a*(b/gcd);
+		if(gcd==a && lcm==b){
+			printf("%lld %lld\n",a,b);
+		}else{
+			printf("-1\n");
 		}
-		printf("%lld\n",sum);
 	}
+	
 	return 0;
 };

@@ -14,27 +14,27 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-const int maxn = 1e3 + 4;
-bool isNyala[maxn];
+const int maxn = 1e5 + 5;
 
 int main(){
-	int tc,n,x,i,j;
+	int tc,i,j,n;
+	int a[maxn];
 	scanf("%d",&tc);
-	for(int tt=1;tt<=tc;tt++){
-		printf("Kasus #%d: ",tt);
-		memset(isNyala,false,sizeof isNyala);
-		scanf("%d %d",&n,&x);
-		for(i=1;i<=x;i++){
-			for(j=i;j<=n;j+=i){
-				if(isNyala[j]){isNyala[j] = false;}
-				else{isNyala[j] = true;}
-			}
-		}
+
+	while(tc--){
+		set<int> s;
 		int cnt = 0;
-		for(i=1;i<=n;i++){
-			if(isNyala[i]){cnt++;}
+		scanf("%d",&n);
+		for(i=0;i<n;i++){
+			scanf("%d",&a[i]); 
+			if(s.find(a[i])!=s.end()){//ketemu
+				cnt++;
+			}else{
+				s.insert(a[i]);
+			}
 		}
 		printf("%d\n",cnt);
 	}
+	
 	return 0;
 };

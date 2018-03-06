@@ -14,27 +14,28 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-const int maxn = 1e3 + 4;
-bool isNyala[maxn];
+const int maxn = 1e6 + 6;
+int a[maxn];
+map<int,int> mapper;
 
 int main(){
-	int tc,n,x,i,j;
-	scanf("%d",&tc);
-	for(int tt=1;tt<=tc;tt++){
-		printf("Kasus #%d: ",tt);
-		memset(isNyala,false,sizeof isNyala);
-		scanf("%d %d",&n,&x);
-		for(i=1;i<=x;i++){
-			for(j=i;j<=n;j+=i){
-				if(isNyala[j]){isNyala[j] = false;}
-				else{isNyala[j] = true;}
-			}
-		}
+	int n,q,i,j;
+	scanf("%d",&n);
+	for(i=1;i<=n;i++){
+		scanf("%d",&a[i]);
+	}
+	scanf("%d",&q);
+	for(i=0;i<q;i++){
+		int l,r;
+		scanf("%d %d",&l,&r);
 		int cnt = 0;
-		for(i=1;i<=n;i++){
-			if(isNyala[i]){cnt++;}
+		for(j=l;j<=r;j++){
+			if(mapper[a[j]]==0){cnt++; mapper[a[j]]++;}
+			else if(mapper[a[j]]==1){cnt--; mapper[a[j]]++;}
+
 		}
 		printf("%d\n",cnt);
+		mapper.clear();
 	}
 	return 0;
 };

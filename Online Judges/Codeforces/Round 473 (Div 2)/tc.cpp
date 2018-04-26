@@ -3,7 +3,9 @@
 using namespace std;
 
 int main(){
-	for(int i=0;i<11;i++){
-		cout<<"athin"<<endl;
+	for(int i=2;i<=129;i++){
+		printf("%d\n",i);
 	}
+
+	return 0;
 }

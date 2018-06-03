@@ -38,6 +38,7 @@ int main() {
 	m = pattern.length();
 	kmpPreprocess();
 	kmpSearch();
+	
 	/*for(i = 0;i <= m; i++) {
 		printf("b[%d]: %d\n",i,b[i]);
 	}*/

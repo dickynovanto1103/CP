@@ -15,16 +15,16 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	set<int> s;
 	int n,i,j;
+	int minim = inf, maks = -inf;
 	scanf("%d",&n);
 	for(i=0;i<n;i++){
 		int bil;
 		scanf("%d",&bil);
-		if(bil!=0){
-			s.insert(bil);
-		}
+		minim = min(minim, bil);
+		maks = max(maks, bil);
+
 	}
-	printf("%d\n",(int)s.size());
+	printf("%d %d\n",maks,minim);
 	return 0;
 };

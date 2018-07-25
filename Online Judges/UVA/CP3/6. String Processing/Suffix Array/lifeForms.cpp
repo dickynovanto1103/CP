@@ -135,6 +135,46 @@ ii LCS() { //return pair lcs length and its index
 
 
 int main(){
+	int n,i,j;
 
+	int pemilik[maxn];
+
+	while(scanf("%d",&n), n){
+		char delimiter = 0;
+		memset(T, 0, sizeof T);
+		for(i=0;i<n;i++){
+			printf("i: %d\n",i);
+			char temp[1000];
+			scanf("%s",temp);
+			for(j=0;j<strlen(temp);j++){
+				temp[j]+=5;
+			}
+			printf("T sekarang: %s temp: %s\n",T, temp);
+			strcat(T, temp);
+			printf("T jadi: %s\n",T);
+			char kar[1];
+			kar[0] = delimiter;
+			strcat(T, kar);
+			
+			printf("T akhir jadi: %s\n",T);
+			delimiter++;
+
+			
+
+			
+		}	
+		n = strlen(T);
+		constructSA();
+		for(i=0;i<strlen(T);i++){
+			printf("%2d\t",SA[i]);
+			for(j=SA[i];j<strlen(T);j++){
+				printf("%c",T[j]);
+			}
+			printf("\n");
+		}
+	}
+
+	
+	
 	return 0;
 };

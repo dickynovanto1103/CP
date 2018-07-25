@@ -15,16 +15,28 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	set<int> s;
-	int n,i,j;
-	scanf("%d",&n);
-	for(i=0;i<n;i++){
-		int bil;
-		scanf("%d",&bil);
-		if(bil!=0){
-			s.insert(bil);
+	ll n,m;
+	scanf("%lld %lld",&n,&m);
+	if(n==1 || m==1){
+		if(n==1){
+			printf("%lld\n",m);
+		}else{
+			printf("%lld\n",n);
 		}
+		return 0;
 	}
-	printf("%d\n",(int)s.size());
+	if(n==2 && m==2){
+		printf("4\n");
+		return 0;
+	}
+
+	if(n==2 || m==2){
+		ll jawab = n+m;
+		
+		printf("%lld\n",jawab);
+		return 0;
+	}
+	ll jawab = n+m;
+	printf("%lld\n",jawab);
 	return 0;
 };

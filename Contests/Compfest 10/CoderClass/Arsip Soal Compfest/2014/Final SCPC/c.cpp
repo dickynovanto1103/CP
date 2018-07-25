@@ -4,7 +4,7 @@ using namespace std;
 #define inf 1000000000
 #define unvisited -1
 #define visited 1
-#define eps 1e-12
+#define eps 1e-9
 #define pb push_back
 #define pi acos(-1.0)
 typedef long long ll;
@@ -22,18 +22,18 @@ struct point_i{
 };
 
 struct point{
-	ll x,y;
+	double x,y;
 	point(){x = y = 0.0;}
-	point(ll _x, ll _y): x(_x), y(_y){}
+	point(double _x, double _y): x(_x), y(_y){}
 	bool operator < (point other) const {
-		if(abs(x-other.x)>0){return x < other.x;}
+		if(fabs(x-other.x)>eps){return x < other.x;}
 		return y<other.y;
 	}
-	bool operator == (point other){return ((x-other.x)==0) && (abs(y-other.y)==0);}
+	bool operator == (point other){return ((fabs(x-other.x)<eps) && (fabs(y-other.y)<eps));}
 };
 struct vec{
-	ll x,y;
-	vec(ll _x, ll _y): x(_x), y(_y){}
+	double x,y;
+	vec(double _x, double _y): x(_x), y(_y){}
 };
 
 vec toVec(point a, point b){
@@ -69,7 +69,7 @@ double angle(point a, point o, point b){//return in rad
 
 
 
-ll cross(vec a, vec b){return a.x*b.y - a.y*b.x;}
+double cross(vec a, vec b){return a.x*b.y - a.y*b.x;}
 bool ccw(point p, point q, point r){
 	return cross(toVec(p,q), toVec(p,r)) > 0;
 }
@@ -87,14 +87,26 @@ bool isConvex(const vector<point> &P){
 	return true;
 }
 
-bool inPolygon(point pt, const vector<point> &P){
-	if(P.size()==0){return false;}
-	double sum = 0.0;
-	for(int i=0;i<P.size()-1;i++){
-		if(ccw(pt,P[i],P[i+1])){sum+=angle(P[i],pt,P[i+1]);}
-		else{sum-=angle(P[i],pt,P[i+1]);}
-	}
-	return fabs(fabs(sum)-2*pi) <eps;
+bool inPolygon(point p, const vector< point >& vp) {
+  int wn = 0, n = (int)vp.size() - 1;
+  for(int i = 0; i<n; i++) {
+    long long cs = cross(vp[i+1], vp[i], p);
+    if(cs == 0 && p.x <= max(vp[i].x, vp[i+1].x) && p.x >= min(vp[i].x, vp[i+1].x)
+      && p.y <= max(vp[i].y, vp[i+1].y) && p.y >= min(vp[i].y, vp[i+1].y))
+      return 1;
+    if(wn == 0) {
+      if(cs < 0)
+        wn = -1;
+      else
+        if(cs > 0)
+          wn = 1;
+    }
+    if(wn) {
+      if(cs * wn <= 0)
+        return 0;
+    }
+  }
+  return 1;
 }
 
 point pivot;
@@ -112,7 +124,6 @@ vector<point> CH(vector<point> P) {
 		if(!(P[0]==P[n-1])){P.pb(P[0]);}
 		return P;
 	}
-	printf("masuk sini\n");
 	//find index so that P[idx] has lowest Y, if tie..the rightmost X
 	int idx = 0;
 	for(i=1;i<n;i++){
@@ -126,59 +137,46 @@ vector<point> CH(vector<point> P) {
 	pivot = P[0];
 	sort(++P.begin(),P.end(),angleCmp);
 
-	printf("p:\n");
-	for(i=0;i<P.size();i++){
-		printf("%lf %lf\n",P[i].x,P[i].y);
-	}
-
 	vector<point> S;
 	S.pb(P[n-1]); S.pb(P[0]); S.pb(P[1]);
-	// printf("dipush: ukuran jd: %d\n",(int)S.size());
-	// printf("pivot: %lf %lf\n",pivot.x, pivot.y);
 	i = 2;
 	while(i<n){
 		j = S.size()-1;
-		// printf("j: %d S[%d]: %lf %lf S[%d]: %lf %lf\n",j,j-1,S[j-1].x,S[j-1].y,j,S[j].x,S[j].y);
-		// printf("P[%d]: %lf %lf\n",i,P[i].x,P[i].y);
-		if(ccw(S[j-1],S[j],P[i])){
-			S.pb(P[i++]);
-			// printf("dipush\n");
-		}
-		else{
-			S.pop_back();
-			// if(S.empty()){
-			// 	printf("kosong ni\n");
-			// }else{
-			// 	printf("ga kosong kok\n");
-				
-			// }
-			// printf("dipop ukuran jd: %d\n",(int)S.size());
-		}
+		if(ccw(S[j-1],S[j],P[i])){S.pb(P[i++]);}
+		else{S.pop_back();}
 	}
 	return S;
 }
 
-int main() {
-	int n,i;
-	vector<point> P;
-	scanf("%d",&n);
-	while(n--){
-		double a,b;
-		scanf("%lf %lf",&a,&b);
-		point p(a,b); P.pb(p);
+int main(){
+	int t;
+	scanf("%d", &t);
+	int n,m,i,j;
+	for(int cc=1;cc<=t;++cc){
+		scanf("%d %d", &n, &m);
+		vector<point> P;
+		for(i=0;i<n;++i){
+			int x,y;
+			scanf("%d %d", &x, &y);
+			point p((double)x, (double)y);
+			P.pb(p);
+		}
+
+		sort(P.begin(), P.end());
+
+		P.erase(unique(P.begin(), P.end()), P.end());
+		P.pb(P[0]);
+		vector<point> ch = CH(P);
+		// cout<<ch.size()<<endl;
+		for(int i=0;i<m;++i){
+			int x, y;
+			scanf("%d %d", &x, &y);
+			point p(x,y);
+			if(inPolygon(p, ch))
+				puts("YA");
+			else
+				puts("TIDAK");	
+		}
 	}
-	P.pb(P[0]);
-	vector<point> PAns = CH(P);
-	int ukuran = PAns.size();
-	printf("ch:\n");
-	printf("ukuran: %d\n",ukuran);
-	// for(i=0;i<PAns.size();i++){
-	// 	printf("%lf %lf\n",PAns[i].x,PAns[i].y);
-	// }
-	double ans = 0;
-	for(i=0;i<ukuran-1;i++){
-		ans+=dist(PAns[i],PAns[i+1]);
-	}
-	printf("%.9lf\n",ans);
 	return 0;
 }

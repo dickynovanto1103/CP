@@ -15,16 +15,15 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	set<int> s;
-	int n,i,j;
-	scanf("%d",&n);
-	for(i=0;i<n;i++){
-		int bil;
-		scanf("%d",&bil);
-		if(bil!=0){
-			s.insert(bil);
-		}
+	string kata;
+	cin>>kata;
+	set<char> s;
+	for(int i=0;i<kata.length();i++){
+		char kar = kata[i];
+		s.insert(kar);
+
 	}
-	printf("%d\n",(int)s.size());
+	if(s.size()%2==1){printf("IGNORE HIM!\n");}
+	else{printf("CHAT WITH HER!\n");}
 	return 0;
 };

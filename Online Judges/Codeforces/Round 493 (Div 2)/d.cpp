@@ -14,17 +14,21 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
+int n;
+ll ans[13] = {4,10,20,35,56,83,116, 155, 198, 244, 292, 341,390};
+
 int main(){
-	set<int> s;
-	int n,i,j;
+	
 	scanf("%d",&n);
-	for(i=0;i<n;i++){
-		int bil;
-		scanf("%d",&bil);
-		if(bil!=0){
-			s.insert(bil);
-		}
+	if(n<=13){
+		printf("%lld\n",ans[n-1]);
+	}else{
+		ll selisihIdx = (n-1) - 12;
+		ll totalSelisih = selisihIdx*49LL;
+		ll jawab = 390 + totalSelisih;
+		// printf("totalSelisih: %lld\n",totalSelisih);
+		printf("%lld\n",jawab);
 	}
-	printf("%d\n",(int)s.size());
+
 	return 0;
 };

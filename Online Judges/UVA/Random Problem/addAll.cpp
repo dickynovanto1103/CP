@@ -14,17 +14,25 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
+const int maxn = 5010;
+
 int main(){
-	set<int> s;
 	int n,i,j;
-	scanf("%d",&n);
-	for(i=0;i<n;i++){
-		int bil;
-		scanf("%d",&bil);
-		if(bil!=0){
-			s.insert(bil);
+	int a[maxn];
+	while(scanf("%d",&n),n) {
+		for(i=0;i<n;i++){
+			scanf("%d",&a[i]);
 		}
+		sort(a,a+n);
+		ll sum = a[0] + a[1];
+		ll sebelum = sum;
+		for(i=2;i<n;i++){
+			ll ans = sebelum + a[i];
+			// printf("ans: %d\n",ans);
+			sebelum = ans;
+			sum+=ans;
+		}
+		printf("%lld\n",sum);
 	}
-	printf("%d\n",(int)s.size());
 	return 0;
 };

@@ -15,13 +15,14 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 const int maxn = 1e5 + 5;
-char T[maxn]; //input string
+
+string T; //input string
 int n;
 int RA[maxn], tempRA[maxn]; // rank array and temp
 int SA[maxn], tempSA[maxn]; //suffix array and its temp
 int c[maxn]; //for counting radix sort
 
-char P[maxn]; //the pattern string (for string matching)
+string P; //the pattern string (for string matching)
 int m; //length of pattern
 
 int Phi[maxn]; //for computing longest common prefix
@@ -69,6 +70,58 @@ void constructSA() {
 	}
 }
 
+int compareString(string kata1, string kata2, int bil) {
+	int pjg = bil;
+	for(int i=0;i<pjg;i++){
+		char kar1 = kata1[i], kar2 = kata2[i];
+		if(kar1 != kar2){
+			return kar1 - kar2;
+		}
+	}
+	return 0;
+}
+
+ii stringMatching() {//string matching in O(m log n)
+	int lo = 0, hi = n-1, mid = lo; //valid matching = [0..n-1]
+	string tempText;
+
+	while(lo < hi) { //find lower bound
+		mid = (lo+hi)/2;
+		tempText = "";
+		for(int i=SA[mid];i<n;i++){
+			tempText+=T[i];
+		}
+		int res = compareString(tempText, P, m);
+		if(res >= 0) {hi = mid;}
+		else{lo = mid+1;}
+	}
+	tempText = "";
+	for(int i=SA[lo];i<n;i++){
+		tempText+=T[i];
+	}	
+	if(compareString(tempText, P, m) != 0){ return ii(-1,-1);}
+	ii ans; ans.first = lo;
+	lo = 0; hi = n-1; mid = lo;
+
+	while(lo < hi) {
+		mid = (lo+hi) / 2;
+		tempText="";
+		for(int i=SA[mid];i<n;i++){
+			tempText+=T[i];
+		}
+		int res = compareString(tempText, P, m);
+		if(res > 0){ hi = mid;}
+		else{lo = mid+1;}
+	}
+	tempText = "";
+	for(int i=SA[hi];i<n;i++){
+		tempText+=T[i];
+	}
+	if(compareString(tempText, P, m) != 0){hi--;} //special case
+	ans.second = hi;
+	return ans;
+} //return the lower/upperboud as first/second item of the pair respectively
+
 void computeLCP() {
 	int i,L;
 	Phi[SA[0]] = -1; //default value
@@ -87,29 +140,6 @@ void computeLCP() {
 		LCP[i] = PLCP[SA[i]];//put the permuted LCP to the correct possition
 	}
 }
-
-ii stringMatching() {//string matching in O(m log n)
-	int lo = 0, hi = n-1, mid = lo; //valid matching = [0..n-1]
-	while(lo < hi) { //find lower bound
-		mid = (lo+hi)/2;
-		int res = strncmp(T + SA[mid], P, m);
-		if(res >= 0) {hi = mid;}
-		else{lo = mid+1;}
-	}
-
-	if(strncmp(T + SA[lo], P, m) != 0){ return ii(-1,-1);}
-	ii ans; ans.first = lo;
-	lo = 0; hi = n-1; mid = lo;
-	while(lo < hi) {
-		mid = (lo+hi) / 2;
-		int res = strncmp(T+SA[mid], P, m);
-		if(res > 0){ hi = mid;}
-		else{lo = mid+1;}
-	}
-	if(strncmp(T + SA[hi], P, m) != 0){hi--;} //special case
-	ans.second = hi;
-	return ans;
-} //return the lower/upperboud as first/second item of the pair respectively
 
 ii LRS() {//return a pair (the LRS length and its index)
 	int i, idx = 0, maxLCP = -1;
@@ -134,7 +164,19 @@ ii LCS() { //return pair lcs length and its index
 }
 
 
-int main(){
-
+int main() {
+	T = "dicky$novanto$";
+	n = T.length();
+	constructSA();
+	computeLCP();
+	
+	int i,j;
+	for(i=0;i<T.length();i++){
+		printf("%2d\t",SA[i]);
+		for(j=SA[i];j<T.length();j++){
+			printf("%c",T[j]);
+		}
+		printf("\n");
+	}
 	return 0;
-};
+}

@@ -135,6 +135,20 @@ ii LCS() { //return pair lcs length and its index
 
 
 int main(){
+	int tc,i,j;
+	scanf("%d",&tc);
+	while(tc--){
+		scanf("%s",T);
+		strcat(T, "$");
+		n = strlen(T);
 
+		constructSA();
+		computeLCP();
+
+		ii ans = LRS();
+
+		printf("%d\n",ans.first);
+
+	}
 	return 0;
 };

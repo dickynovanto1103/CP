@@ -15,16 +15,18 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	set<int> s;
 	int n,i,j;
 	scanf("%d",&n);
-	for(i=0;i<n;i++){
-		int bil;
-		scanf("%d",&bil);
-		if(bil!=0){
-			s.insert(bil);
+	string kata;
+	cin>>kata;
+	for(i=1;i<=n;i++){
+		if(n%i==0){
+			//reverse
+			reverse(kata.begin(), kata.begin() + i);
+			// printf("i: %d\n",i);
+			// cout<<"kata jadi: "<<kata<<endl;
 		}
 	}
-	printf("%d\n",(int)s.size());
+	cout<<kata<<endl;
 	return 0;
 };

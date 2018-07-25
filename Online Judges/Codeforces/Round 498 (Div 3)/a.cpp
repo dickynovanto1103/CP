@@ -14,17 +14,26 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
+const int maxn = 1e3 + 3;
+
 int main(){
-	set<int> s;
 	int n,i,j;
+	int a[maxn];
 	scanf("%d",&n);
+	set<int> s;
+	for(i=0;i<n;i++){scanf("%d",&a[i]); s.insert(a[i]);}
 	for(i=0;i<n;i++){
-		int bil;
-		scanf("%d",&bil);
-		if(bil!=0){
-			s.insert(bil);
+		int bil = a[i];
+		if(bil%2==1){
+			
+		}else{
+			a[i]--;
 		}
 	}
-	printf("%d\n",(int)s.size());
+	for(i=0;i<n;i++){
+		if(i){printf(" ");}
+		printf("%d",a[i]);
+	}
+	printf("\n");
 	return 0;
 };

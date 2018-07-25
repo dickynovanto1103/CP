@@ -135,6 +135,21 @@ ii LCS() { //return pair lcs length and its index
 
 
 int main(){
+	scanf("%s",T);
+	strcat(T, "$");
+	n = strlen(T);
+	constructSA();
 
+	// for(int i=0;i<strlen(T);i++){
+	// 	printf("%2d\t",SA[i]);
+	// 	for(int j=SA[i];j<strlen(T);j++){
+	// 		printf("%c",T[j]);
+	// 	}
+	// 	printf("\n");
+	// }
+
+	for(int i=1;i<n;i++){
+		printf("%d\n",SA[i]);
+	}
 	return 0;
 };

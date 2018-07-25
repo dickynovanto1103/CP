@@ -14,17 +14,33 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-int main(){
-	set<int> s;
-	int n,i,j;
-	scanf("%d",&n);
-	for(i=0;i<n;i++){
-		int bil;
-		scanf("%d",&bil);
-		if(bil!=0){
-			s.insert(bil);
-		}
+vi hasilParse;
+
+void parse(int bil){
+	hasilParse.clear();
+	while(bil>0){
+		int angka = bil%10;
+		hasilParse.pb(angka);
+		bil/=10;
 	}
-	printf("%d\n",(int)s.size());
+}
+
+int hitungJumlah(){
+	int sum = 0;
+	for(int i=0;i<hasilParse.size();i++){
+		sum+=hasilParse[i];
+	}
+	return sum;
+}
+
+int main(){
+	int n;
+	scanf("%d",&n);
+	int sum = 0;
+	for(int i=1;i<=n;i++){
+		parse(i);
+		sum+=hitungJumlah();
+	}
+	printf("sum: %d\n",sum);
 	return 0;
 };

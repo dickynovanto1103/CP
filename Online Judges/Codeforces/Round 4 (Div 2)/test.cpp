@@ -15,16 +15,13 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	set<int> s;
-	int n,i,j;
-	scanf("%d",&n);
-	for(i=0;i<n;i++){
-		int bil;
-		scanf("%d",&bil);
-		if(bil!=0){
-			s.insert(bil);
+	int a[] = {2,3,4,5};
+	do{
+		for(int i=0;i<4;i++){
+			if(i){printf(" ");}
+			printf("%d",a[i]);
 		}
-	}
-	printf("%d\n",(int)s.size());
+		printf("\n");
+	}while(next_permutation(a,a+4));
 	return 0;
 };

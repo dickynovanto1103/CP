@@ -15,16 +15,21 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	set<int> s;
 	int n,i,j;
 	scanf("%d",&n);
-	for(i=0;i<n;i++){
+	set<int> s;
+	int ans = 0;
+	for(i=0;i<2*n;i++){
 		int bil;
 		scanf("%d",&bil);
-		if(bil!=0){
+		if(s.find(bil) == s.end()){
 			s.insert(bil);
+			ans = max(ans, (int)s.size());
+		}else{
+			s.erase(bil);
 		}
 	}
-	printf("%d\n",(int)s.size());
+
+	printf("%d\n",ans);
 	return 0;
 };

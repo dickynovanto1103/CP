@@ -15,16 +15,19 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	set<int> s;
-	int n,i,j;
-	scanf("%d",&n);
-	for(i=0;i<n;i++){
-		int bil;
-		scanf("%d",&bil);
-		if(bil!=0){
-			s.insert(bil);
-		}
+	multiset<int> s;
+	multiset<int>::iterator it;
+	for(int i=0;i<10;i++){
+		s.insert(i); s.insert(i);
 	}
-	printf("%d\n",(int)s.size());
+
+	it = s.find(1);
+	s.erase(it);
+	for(it=s.begin();it!=s.end();it++){
+		printf("%d ",*it);
+	}
+	printf("\n");
+
+
 	return 0;
 };

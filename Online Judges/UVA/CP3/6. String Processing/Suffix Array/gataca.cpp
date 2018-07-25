@@ -111,11 +111,39 @@ ii stringMatching() {//string matching in O(m log n)
 	return ans;
 } //return the lower/upperboud as first/second item of the pair respectively
 
+string kataJawab;
+int cnt;
+
 ii LRS() {//return a pair (the LRS length and its index)
 	int i, idx = 0, maxLCP = -1;
+	cnt = 0;
+	kataJawab = "";
 	for(i=1;i<n;i++) {
+		// printf("i: %d\n",i);
 		if(LCP[i] > maxLCP) {
 			maxLCP = LCP[i], idx = i;
+			kataJawab = "";
+			for(int j=SA[idx];j<(SA[idx]+maxLCP);j++) {
+				kataJawab+=T[j];
+			}
+			// printf("maxLCP jd: %d\n",maxLCP);
+			// cout<<"kataJawab: "<<kataJawab<<endl;
+			cnt = 2;
+		}else if(LCP[i] == maxLCP){
+			string kataTemp = "";
+			for(int j=SA[i]; j<(SA[i] + maxLCP); j++){
+				kataTemp+=T[j];
+			}
+			// printf("kataTemp: " ); cout<<kataTemp<<" kataJawab: " <<kataJawab<<endl;
+			if(kataTemp<kataJawab){
+				kataJawab = kataTemp;
+				cnt = 1;
+				// printf("cnt 1 dan kataJawab : "); cout<<kataJawab<<endl;
+			}else if(kataTemp == kataJawab){
+				cnt++;
+				// printf("cnt jadi: %d\n",cnt);
+			}
+
 		}
 	}
 	return ii(maxLCP, idx);
@@ -135,6 +163,33 @@ ii LCS() { //return pair lcs length and its index
 
 
 int main(){
+	int tc;
+	scanf("%d",&tc);
+	while(tc--){
+		scanf("%s",T);
+		n = strlen(T);
+		T[n++] = '$';
 
+		constructSA();
+		computeLCP();
+
+
+		int i,j;
+		// for(i=0;i<n;i++){
+		// 	printf("%2d\t",SA[i]);
+		// 	for(j=SA[i];j<n;j++){
+		// 		printf("%c",T[j]);
+		// 	}
+		// 	printf("\n");
+		// }
+		ii ans = LRS();
+		if(ans.first==0){
+			printf("No repetitions found!\n");
+		}else{
+			cout<<kataJawab<<" "<<cnt<<endl;	
+		}
+		
+		// printf("%d %d\n",ans.first, ans.second);
+	}
 	return 0;
 };

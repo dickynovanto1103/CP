@@ -17,6 +17,7 @@ typedef vector<ii> vii;
 
 const int maxChar = 60;
 
+//vertex of each node in trie
 struct vertex{
 	int next[maxChar];
 	bool leaf = false;
@@ -24,7 +25,7 @@ struct vertex{
 	char kar;
 	int link = -1;
 	int go[maxChar];
-	vi idx;
+	vi idx;//there might be multiple same strings in queries so we need to save all the indices so that each indices will get the same answer
 
 	vertex(int parent = -1, char kar = '$') : parent(parent), kar(kar) {
 		memset(next, -1, sizeof next);
@@ -34,6 +35,7 @@ struct vertex{
 
 vector<vertex> trie;
 
+//adding string to trie
 void addString(string word, int idx){
 	int node = 0;
 	for(char kar: word){
@@ -50,6 +52,7 @@ void addString(string word, int idx){
 
 int go(int node, char nextChar);
 
+//get the suffix link of each node
 int getLink(int node){
 	if(trie[node].link == -1){
 		if(node == 0 || trie[node].parent == 0){
@@ -61,6 +64,7 @@ int getLink(int node){
 	return trie[node].link;
 }
 
+//get the information where to go next in automaton
 int go(int node, char nextChar){
 	int bil = nextChar - 'A';
 	if(trie[node].go[bil] == -1){
@@ -88,13 +92,16 @@ int main(){
 		int n;
 		cin>>n;
 		trie.assign(1, vertex());
+		//constructing trie
 		for(i=0;i<n;i++){
 			cin>>listOfWord[i];
 			addString(listOfWord[i],i);
 		}
+		//end of constructing trie
 		memset(isExist, false, sizeof isExist);
 		int node = 0;
 		char lastKar;
+		//iterate through all the characters in word and follow where each node go
 		for(char kar : word){
 			lastKar = kar;
 			node = go(node, kar);
@@ -104,10 +111,11 @@ int main(){
 				}
 			}
 		}
+		//in case where after matching through all the characters in word, there are query strings that are yet checked..so create suffix link further
 		if(node != 0){
-			go(node,lastKar);
+			go(node,lastKar); 
 			while(node>0){
-				node = getLink(node);
+				node = getLink(node);//follow the suffix link
 				if(trie[node].leaf){
 					for(int idx: trie[node].idx){
 						isExist[idx] = true;

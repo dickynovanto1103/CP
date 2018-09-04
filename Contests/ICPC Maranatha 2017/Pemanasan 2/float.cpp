@@ -1,3 +1,8 @@
+// #include <algorithm>
+// #include <utility>
+// #include <cstdio>
+// #include <vector>
+// #include <cmath>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -41,7 +46,7 @@ public:
 	int sizeSetOf(int i){return setSize[findSet(i)];}
 };
 
-int main() {
+int main(){
 	int tc,n,i,j;
 	scanf("%d",&tc);
 	int test = 1;
@@ -54,8 +59,10 @@ int main() {
 		for(i=0;i<n;i++){
 			for(j=i+1;j<n;j++){
 				double jarak = hypot(a[i]-a[j],b[i]-b[j]);
+				printf("jarak antara %lf %lf dan %lf %lf adalah %lf\n", a[i],b[i], a[j],b[j],jarak);
 				EdgeList.pb(make_pair(jarak,ii(i,j)));
 			}
+			printf("\n");
 		}
 		sort(EdgeList.begin(),EdgeList.end());
 		double mst = 0;
@@ -64,7 +71,9 @@ int main() {
 			iii front = EdgeList[i];
 			double jarak = front.first;
 			int node1 = front.second.first,node2 = front.second.second;
+
 			if(!UF.isSameSet(node1,node2)){
+				printf("yang diambil: node %d dan %d jarak: %lf\n",node1+1,node2+1,jarak);
 				UF.unionSet(node1,node2);
 				mst+=jarak;
 			}

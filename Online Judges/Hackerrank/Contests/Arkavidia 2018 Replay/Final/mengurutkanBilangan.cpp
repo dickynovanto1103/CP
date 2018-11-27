@@ -9,10 +9,12 @@ using namespace std;
 #define pb push_back
 #define pi acos(-1.0)
 #define uint64 unsigned long long
+#define FastSlowInput ios_base::sync_with_stdio(false); cin.tie(NULL);
 typedef long long ll;
 typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
+
 
 struct pasangan{
 	int idx;
@@ -27,14 +29,15 @@ bool isLebihKecil(string &kata1, string &kata2){
 
 pasangan p[5010];
 
-bool cmp(pasangan &a, pasangan &b){
+bool cmp(pasangan a, pasangan b){
 	if(a.kata1 == b.kata1){return a.idx < b.idx;}
 	return !isLebihKecil(a.kata1, b.kata1);
 }
 
 int main(){
+	FastSlowInput
 	int n,i,j;
-	scanf("%d",&n);
+	cin>>n;
 
 	for(i=1;i<=n;i++){
 		cin>>p[i].kata1>>p[i].kata2;
@@ -55,7 +58,8 @@ int main(){
 		//cout<<p[i].kata1<<" "<<p[i].kata2<<" "<<p[i].idx<<endl;
 	}
 	for(i=1;i<=n;i++){
-		printf("%d\n",ans[i]);
+		cout<<ans[i]<<endl;
+		// printf("%d\n",ans[i]);
 	}
 	return 0;
 };

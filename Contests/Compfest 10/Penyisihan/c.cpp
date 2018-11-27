@@ -13,59 +13,105 @@ typedef long long ll;
 typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
-typedef pair<ii,int> iii;
+
 vector<vi> AdjList;
 
-const int maxn = 5e4 + 4;
+const int maxn = 50010;
+int dist[maxn];
 
-struct pasangan{
-	int cnt, minVal;
-};
+void bfs(int node){
+	// queue<int> q;
+
+	// q.push(node);
+	// dist[node] = 0;
+	// while(!q.empty()){
+	// 	int front = q.front(); q.pop();
+	// 	for(int i=0;i<AdjList[front].size();i++){
+	// 		int v = AdjList[front][i];
+	// 		if(dist[v] == -1){
+	// 			dist[v] = dist[node] + 1;
+	// 			q.push(v);
+	// 		}
+	// 	}
+	// }
+	for(int i=0;i<AdjList[node].size();i++){
+		int v = AdjList[node][i];
+		if(dist[v] == -1){
+			dist[v] = dist[node] + 1;
+			bfs(v);
+		}
+	}
+}
+int cnt[maxn];
+
+void coba(int node, int k, int parent){
+	cnt[node]++;
+	if(k == 0){return;}
+	for(int i=0;i<AdjList[node].size();i++){
+		int v = AdjList[node][i];
+		if(v!=parent){
+			coba(v, k-1, node);
+		}
+		
+	}	
+}
 
 int main(){
-	int tc;
-	int n,m,k,i,j;
+	int tc,i,j;
 	scanf("%d",&tc);
 	while(tc--){
+		memset(cnt, 0, sizeof cnt);
+		int n,m,k;
 		scanf("%d %d %d",&n,&m,&k);
 		AdjList.assign(n+1,vi());
-		int asal[maxn];
 		for(i=0;i<(n-1);i++){
 			int a,b;
 			scanf("%d %d",&a,&b);
 			AdjList[a].pb(b); AdjList[b].pb(a);
-
 		}
-		queue<iii> q;
+		
+		memset(dist, -1, sizeof dist);
+		int a[maxn];
 		for(i=0;i<m;i++){
-			scanf("%d",&asal[i]);
-			q.push(make_pair(ii(asal[i],k), -1));
+			scanf("%d",&a[i]);
 		}
-
-		int cnt[maxn];
-		memset(cnt, 0, sizeof cnt);
-		while(!q.empty()){
-			iii front = q.front(); q.pop();
-			int node = front.first.first, sisaK = front.first.second, parent = front.second;
-			if(sisaK == -1){continue;}
-			cnt[node]++;
-			// printf("cnt[%d] jadi: %d\n",node,cnt[node]);
-			for(i=0;i<AdjList[node].size();i++){
-				int v = AdjList[node][i];
-				if(v!=parent){
-					q.push(make_pair(ii(v,sisaK-1), node));	
-				}
+		dist[a[0]] = 0;
+		bfs(a[0]);
+		int maks = -1, maksIdx = 1;
+		for(i=0;i<m;i++){
+			if(dist[a[i]] == inf){continue;}
+			if(maks < dist[a[i]]){
+				maks = dist[a[i]];
+				maksIdx = a[i];
 			}
 		}
+		int walikota1 = maksIdx, walikota2 = 1;
+
+		memset(dist, -1, sizeof dist);
+		dist[walikota1] = 0;
+		bfs(walikota1);
+		maks = -1, maksIdx = 1;
+		for(i=0;i<m;i++){
+			if(dist[a[i]] == inf){continue;}
+			if(maks < dist[a[i]]){
+				maks = dist[a[i]];
+				maksIdx = a[i];
+			}
+		}
+		walikota2 = maksIdx;
+		// printf("walikota1: %d walikota2: %d\n",walikota1, walikota2);
+		coba(walikota1, k, -1);
+		coba(walikota2, k, -1);
+		// for(i=1;i<=n;i++){
+		// 	printf("cnt[%d]: %d\n",i,cnt[i]);
+		// }
 		int ans = 0;
 		for(i=1;i<=n;i++){
-			if(cnt[i] == m){
+			if(cnt[i] == 2){
 				ans++;
 			}
 		}
 		printf("%d\n",ans);
-
-		AdjList.clear();
 	}
 	return 0;
 };

@@ -12,6 +12,7 @@ using namespace std;
 typedef long long ll;
 typedef vector<int> vi;
 typedef pair<int,int> ii;
+typedef pair<int,ii> iii;
 typedef vector<ii> vii;
 
 const int maxn = 810;
@@ -24,17 +25,22 @@ int dy[] = {0,1,0,-1};
 int n;
 
 bool isValidLebah(int x, int y){
-	return x>=0 && x<n && y>=0 && y<n && occupie[x][y]!='#' && occupie[x][y]!='@';
+	return x>=0 && x<n && y>=0 && y<n && occupie[x][y]!='#' && occupie[x][y]!='@' && occupie[x][y] != 'H';
 }
 
 bool isValidBear(int x, int y){
-	return x>=0 && x<n && y>=0 && y<n && occupie[x][y]!='#' && occupie[x][y]!='H';
+	return x>=0 && x<n && y>=0 && y<n && occupie[x][y]!='#' && occupie[x][y]!='H' && occupie[x][y]!='K';
+}
+
+bool isRumah(int x, int y){
+	return occupie[x][y] == '@';
 }
 
 int main(){
 	int tc,i,j,k;
 	scanf("%d",&tc);
 	ii listKoorLebah[maxn*maxn];
+
 	for(int tt=1;tt<=tc;tt++){
 		printf("Kasus #%d: ",tt);
 		scanf("%d %d",&n,&k);
@@ -57,7 +63,6 @@ int main(){
 		int kiri = 0, kanan = n*n, mid, ans = -1;
 		
 		while(kiri <= kanan){
-			// printf("kiri: %d kanan: %d\n",kiri,kanan);
 			mid = (kiri + kanan)/2;
 			queue<ii> q;
 			
@@ -73,104 +78,90 @@ int main(){
 			}
 
 			int temp = mid;
-			// printf("temp: %d\n",temp);
-			while(!q.empty()){
-				int ukuranQ = q.size();
-
-				if(temp == 0){break;}
-				while(ukuranQ--){
+			for(i=0;i<temp;i++){
+				int ukuran = q.size();
+				for(int t = 0;t<ukuran;t++){
 					ii front = q.front(); q.pop();
 					int x = front.first, y = front.second;
+					
+					occupie[x][y] = 'H';
+					for(j=0;j<4;j++){
+						int xbaru = x + dx[j], ybaru = y + dy[j];
+						if(isValidLebah(xbaru,ybaru)){
+							q.push(ii(xbaru,ybaru));
+							
+							occupie[xbaru][ybaru] = 'H';
+						}
+					}
+				}	
+			}
+			if(occupie[koorBear.first][koorBear.second] == 'H'){
+				kanan = mid-1;
+				continue;
+			}
+			queue<ii> qBear;
+			qBear.push(koorBear);
+			bool isBisaSampeRumah = false;
+			bool isMasihAda = false;
+			while(true){
+				isMasihAda = false;
+				for(i=0;i<k;i++){
+					int ukuran = qBear.size();
+
+					while(ukuran--){
+						ii front = qBear.front(); qBear.pop();
+						int x = front.first, y = front.second;
+						if(occupie[x][y] == 'H'){
+							continue;
+						}
+						isMasihAda = true;
+						occupie[x][y] = 'K';
+						for(j=0;j<4;j++){
+							int xbaru = x + dx[j], ybaru = y + dy[j];
+							if(isValidBear(xbaru, ybaru)){
+								if(isRumah(xbaru,ybaru)){
+
+									isBisaSampeRumah = true;
+									break;
+								}
+								qBear.push(ii(xbaru,ybaru));
+								occupie[xbaru][ybaru] = 'K';
+							}
+						}
+						if(isBisaSampeRumah){break;}
+					}
+					if(isBisaSampeRumah){break;}
+				}
+				// printf("nilai isMasihAda: %d\n",isMasihAda);
+				if(isBisaSampeRumah){break;}
+				if(!isMasihAda){break;}
+				int ukuran = q.size();
+				while(ukuran--){
+					ii front = q.front(); q.pop();
+					int x = front.first, y = front.second;
+					// printf("x sekarang: %d y sekarang: %d\n",x,y);
+					occupie[x][y] = 'H';
 					for(i=0;i<4;i++){
 						int xbaru = x + dx[i], ybaru = y + dy[i];
 						if(isValidLebah(xbaru,ybaru)){
-							if(occupie[xbaru][ybaru] == 'H'){continue;}
-							occupie[xbaru][ybaru] = 'H';
 							q.push(ii(xbaru,ybaru));
-						}
-					}
-				}
-				temp--;
-				if(temp == 0){break;}
-				
-			}
-			// printf("peta\n");
-			// for(i=0;i<n;i++){
-			// 	for(j=0;j<n;j++){
-			// 		printf("%c",occupie[i][j]);
-			// 	}
-			// 	printf("\n");
-			// }
-			// printf("temp: %d\n",temp);
-			if(temp){//bahkan udah penuh dengan lebah
-				kanan = mid-1;
-				continue;
-			}
-			if(!isValidBear(koorBear.first,koorBear.second)){
-				kanan = mid-1;
-				continue;
-			}
-			
-			bool bisaKeRumah = false;
-			//gerak lebah dulu baru gerak bear
-			queue<ii> qBear;
-			qBear.push(koorBear);
-			while(true){
-				if(!qBear.empty()){
-					int banyakLangkah = k;
-					int ukuranBear = qBear.size();
-					while(ukuranBear--){
-						while(banyakLangkah--){
-							if(qBear.empty()){break;}
-							ii front = qBear.front(); qBear.pop();
-
-							int x = front.first, y = front.second;
-							if(!isValidBear(x,y)){continue;} //sudah dioccupy sama lebah lain
-							for(i=0;i<4;i++){
-								int xbaru = x + dx[i], ybaru = y + dy[i];
-								if(isValidBear(xbaru, ybaru)){
-									if(ii(xbaru,ybaru) == koorRumah){bisaKeRumah = true; break;}
-									if(occupie[xbaru][ybaru] == 'K'){continue;}
-									occupie[xbaru][ybaru] = 'K';
-									// printf("occupie: %d %d dengan K\n",xbaru,ybaru);
-									qBear.push(ii(xbaru,ybaru));
-								}
-							}
-							if(bisaKeRumah){break;}
-						}
-						if(qBear.empty()){break;}
-						if(bisaKeRumah){break;}
-					}
-					
-				}else{
-					break;
-				}
-
-				if(bisaKeRumah){break;}
-				if(!q.empty()){
-					ii front = q.front(); q.pop();
-					int x = front.first, y = front.second;
-					
-					for(i=0;i<4;i++){
-						int xbaru = x + dx[i], ybaru = y + dy[i];
-						if(isValidLebah(xbaru, ybaru)){
-							if(occupie[xbaru][ybaru] == 'H'){continue;}
 							occupie[xbaru][ybaru] = 'H';
-							// printf("occupie: %d %d dengan H\n",xbaru,ybaru);
-							q.push(ii(xbaru,ybaru));
+							// printf("dipush %d %d\n",xbaru,ybaru);
 						}
 					}
 				}
-				// printf("halo\n");
 			}
-			if(bisaKeRumah){
+			if(isBisaSampeRumah){
 				ans = mid;
-				// printf("diassign ans: %d\n",ans);
 				kiri = mid+1;
-			}else{
-				kanan = mid-1;
+				continue;
 			}
-			
+			if(!isMasihAda){
+				kanan = mid-1;
+				continue;
+			}
+
+
 		}
 		printf("%d\n",ans);
 	}

@@ -7,12 +7,12 @@ typedef vector <int> vi;
 
 vector <iii> EdgeList;
 
-class UnionFind{
+class DisjointSet{
 private: 
 	vi rank,p,setSize;
 	int numset,i;
 public:
-	UnionFind(int n){
+	DisjointSet(int n){
 		numset=n; setSize.assign(n,1); rank.assign(n,0); p.assign(n,0);
 		for(i=0;i<n;i++){p[i]=i;}
 	}
@@ -38,7 +38,7 @@ public:
 int main(){
 	int V,E,i,u,v,w;
 	scanf("%d %d",&V,&E);
-	UnionFind UF(V);
+	DisjointSet DS(V);
 	for(i=0;i<E;i++){
 		scanf("%d %d %d",&u,&v,&w);
 		EdgeList.push_back(make_pair(w,ii(u,v)));
@@ -47,9 +47,9 @@ int main(){
 	int mstcost=0;
 	for(i=0;i<E;i++){
 		iii front = EdgeList[i];
-		if(!UF.isSameSet(front.second.first,front.second.second)){
+		if(!DS.isSameSet(front.second.first,front.second.second)){
 			mstcost+=front.first;
-			UF.unionSet(front.second.first,front.second.second);
+			DS.unionSet(front.second.first,front.second.second);
 		}
 	}
 	printf("Mst cost: %d\n",mstcost);

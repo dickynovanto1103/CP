@@ -15,6 +15,6 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	
+
 	return 0;
 };

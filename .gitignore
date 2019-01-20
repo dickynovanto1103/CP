@@ -41,7 +41,12 @@
 *.out
 *.class
 
+#other unnecessary directories
 /Buku
 /Catatan
+/Paper
+/Groups
+/Contests
+/Cheatsheet
 
 # End of https://www.gitignore.io/api/c++

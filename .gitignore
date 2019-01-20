@@ -41,4 +41,7 @@
 *.out
 *.class
 
+/Buku
+/Catatan
+
 # End of https://www.gitignore.io/api/c++

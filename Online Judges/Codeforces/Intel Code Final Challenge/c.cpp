@@ -110,7 +110,6 @@ int main(){
 						if(a < 0){
 							int pengali = (-b)/(-koef1);
 							ll y = b - (ll)pengali*(ll)(koef1);
-							printf("masuk sini\n");
 							assert(y >=0);
 							ll jawab = y*2LL*(ll)m + (ll)posY[l];
 							if(jawab < 0){continue;}
@@ -118,7 +117,6 @@ int main(){
 						}else if(b < 0){
 							int pengali = (-a) / (-koef2);
 							ll x = a + (ll)pengali*(-koef2);
-							printf("gan\n");
 							assert(x >= 0);
 							ll jawab = x*2LL*(ll)n + (ll)posX[j];
 							// printf("jawab: %lld\n",jawab);

@@ -14,14 +14,14 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-const int maxn = 3000;
+const int maxn = 3001;
 
 double dp[maxn][maxn];
 double a[maxn];
 int n;
 
 double solve(int idx, int head) {
-	if(idx == n){
+	if(idx == n+1){
 		if(head == 0){return 1;}
 		else
 			return 0;
@@ -35,17 +35,39 @@ int main(){
 	int i,j;
 	for(i=0;i<maxn;i++){
 		for(j=0;j<maxn;j++){
-			dp[i][j] = -1;
+			dp[i][j] = 0;
 		}
 	}
 	
 	scanf("%d",&n);
-	for(i=0;i<n;i++){scanf("%lf",&a[i]);}
+	for(i=1;i<=n;i++){scanf("%lf",&a[i]);}
+	// top down approach
+
+	// int minim = n/2 + 1;
+	// double ans = 0;
+	// for(i=minim;i<=n;i++){
+	// 	ans += solve(1, i);
+	// }
+
+
+	// bottom up approach
+	// dp[idx][head] = prob that at index idx we have number of head up
 	int minim = n/2 + 1;
 	double ans = 0;
-	for(i=minim;i<=n;i++){
-		ans += solve(0, i);
+	dp[1][1] = a[1];
+	dp[1][0] = 1-a[1];
+	for(i=2;i<=n;i++){
+		dp[i][0] = dp[i-1][0]*(1-a[i]);
+		for(j=1;j<=i;j++){
+			dp[i][j] = dp[i-1][j-1]*a[i] + dp[i-1][j]*(1-a[i]);
+		}
 	}
+	for(i=1;i<=n;i++){
+		int head = i, tail = n-i;
+		if(head > tail)
+			ans += dp[n][i];
+	}
+
 	printf("%.10lf\n",ans);
 	return 0;
 };

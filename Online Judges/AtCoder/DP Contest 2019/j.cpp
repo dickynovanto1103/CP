@@ -23,26 +23,28 @@ int n;
 int tot;
 
 double solve(int cnt1, int cnt2, int cnt3) {
-	printf("cnt1: %d cnt2: %d cnt3: %d\n",cnt1, cnt2, cnt3);
+	// printf("cnt1: %d cnt2: %d cnt3: %d\n",cnt1, cnt2, cnt3);
 	if(cnt1 == 0 && cnt2 == 0 && cnt3 == 0){
-		printf("halo\n");
+		// printf("halo\n");
 		return 0;
 	}
 	if(fabs(dp[cnt1][cnt2][cnt3] + 1) > eps){return dp[cnt1][cnt2][cnt3];}
 	double ans1 = 0, ans2 = 0, ans3 = 0;
+	int sisa = n - cnt1 - cnt2 - cnt3;
+
 	if(cnt1 > 0){
-		ans1 = ((double)n/(double)(n-(cnt2+cnt3))) + ((double)cnt1/(double)n)*solve(cnt1-1, cnt2, cnt3);	
+		ans1 = ((double)cnt1/(double)(cnt1+cnt2+cnt3))*solve(cnt1-1, cnt2, cnt3);	
 	}
 	if(cnt2 > 0){
-		ans2 = ((double)n/(double)(n - (cnt1+cnt3))) + ((double)cnt2/(double)n)*solve(cnt1+1, cnt2-1, cnt3);	
+		ans2 = ((double)cnt2/(double)(cnt1+cnt2+cnt3))*solve(cnt1+1, cnt2-1, cnt3);	
 	}
 	if(cnt3 > 0){
-		ans3 = ((double)n/(double)(n - (cnt1+cnt2))) + ((double)cnt3/(double)n)*solve(cnt1, cnt2+1, cnt3-1);	
+		ans3 = ((double)cnt3/(double)(cnt1+cnt2+cnt3))*solve(cnt1, cnt2+1, cnt3-1);
 	}
-	printf("ans1 : %lf ans2 : %lf ans3 : %lf\n",ans1,ans2,ans3);
-	printf("cnt1: %d cnt2: %d cnt3: %d\n",cnt1, cnt2, cnt3);
+	// printf("ans1 : %lf ans2 : %lf ans3 : %lf\n",ans1,ans2,ans3);
+	// printf("cnt1: %d cnt2: %d cnt3: %d\n",cnt1, cnt2, cnt3);
 	
-	return dp[cnt1][cnt2][cnt3] = ans1 + ans2 + ans3;
+	return dp[cnt1][cnt2][cnt3] = ((double)1.0 / (double)(cnt1+cnt2+cnt3)) +  ans1 + ans2 + ans3;
 }
 
 int main(){
@@ -64,8 +66,8 @@ int main(){
 		else if(bil == 2){cnt2++;}
 		else{cnt3++;}
 	}
-	printf("cnt1: %d cnt2: %d cnt3: %d\n",cnt1,cnt2,cnt3);
+	// printf("cnt1: %d cnt2: %d cnt3: %d\n",cnt1,cnt2,cnt3);
 	tot = cnt1 + cnt2 + cnt3;
-	printf("%.10lf\n",solve(cnt1, cnt2, cnt3));
+	printf("%.10lf\n",solve(cnt1, cnt2, cnt3)*n);
 	return 0;
 };

@@ -50,9 +50,6 @@ int main(){
 				double jarak = hypot(x1[i] - x2[j], y1[i] - y2[j]);
 				if(fabs(jarak-jarakMaks) < eps || jarak < jarakMaks) {
 					AdjList[i].pb(n+j);
-					// printf("yang dihubungkan adalah: %d dan %d\n",i,n+j);
-					// printf("jarak: %lf jarakMaks: %lf\n",jarak, jarakMaks);
-					// AdjList[n+j].pb(i);
 				}
 			}
 		}
@@ -62,7 +59,6 @@ int main(){
 			vis.assign(n,0);
 			mcbm+=Aug(i);
 		}
-		// printf("mcbm; %d\n",mcbm);
 		
 		printf("%d\n", n-mcbm);
 	}

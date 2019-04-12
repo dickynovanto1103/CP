@@ -14,21 +14,7 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-const ll mod = 1e9 + 7;
-
-ll modPow(ll a, ll b){
-	if(b == 0){
-		return 1;
-	}else{
-		if(b%2==1){return a*modPow(a,b-1)%mod;}
-		else{
-			ll temp = modPow(a,b/2);
-			return temp*temp%mod;
-		}
-	}
-}
-
 int main(){
-	printf("%lld\n",modPow(3,mod-2)*8%mod);
+
 	return 0;
 };

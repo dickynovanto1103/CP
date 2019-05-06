@@ -16,6 +16,18 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	
+	int n,k;
+	scanf("%d %d",&n,&k);
+	ll minim = ((ll)k*(ll)(k-1))/2LL;
+	ll tambah = k;
+	if(n < (minim + tambah)){
+		printf("NO\n");
+	}else{
+		if(k <= 30){
+			if(n > (1<<k) - 1){
+
+			}
+		}
+	}
 	return 0;
 };

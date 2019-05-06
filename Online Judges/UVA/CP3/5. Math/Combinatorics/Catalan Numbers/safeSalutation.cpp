@@ -7,6 +7,7 @@ int main(){
 	a[0] = 1;
 	for(i=1;i<=10;i++){
 		a[i] = (2*i*(2*i-1)*a[i-1])/((i+1)*i);
+		printf("a[%d]: %d\n",i,a[i]);
 	}
 	int test = 1;
 	while(scanf("%d",&n)!=EOF){

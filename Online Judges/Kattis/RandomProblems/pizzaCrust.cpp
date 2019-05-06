@@ -16,6 +16,9 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	
+	int r,c;
+	scanf("%d %d",&r,&c);
+	double ans = (1.0*(r-c)*(r-c)) / (1.0*(r)*(r));
+	printf("%.9lf\n",ans*100.0);
 	return 0;
 };

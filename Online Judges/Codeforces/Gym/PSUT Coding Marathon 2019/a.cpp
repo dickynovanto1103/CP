@@ -16,6 +16,9 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	
+	int n;
+	scanf("%d",&n);
+	int pengurangan = n/3;
+	printf("%d\n",n-pengurangan);
 	return 0;
 };

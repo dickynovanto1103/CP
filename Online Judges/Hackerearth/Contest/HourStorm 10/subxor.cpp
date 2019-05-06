@@ -9,13 +9,22 @@ using namespace std;
 #define pb push_back
 #define pi acos(-1.0)
 #define uint64 unsigned long long
-#define FastSlowInput ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define FastSlowInput ios_base::sync_with_stdio(false); cin.tie(NULL);
 typedef long long ll;
 typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	
+	int n,i,j;
+	scanf("%d",&n);
+	int sor = 0;
+	for(i=0;i<n;i++){
+		int bil;
+		scanf("%d",&bil);
+		sor ^= bil;
+	}
+	if(sor == 0){printf("-1\n");}
+	else{printf("1\n");}
 	return 0;
 };

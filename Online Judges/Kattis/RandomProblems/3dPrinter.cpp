@@ -16,6 +16,15 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	
+	int n,i,j;
+	scanf("%d",&n);
+	int bil = 1;
+	int ans = 0;
+	while(bil < n){
+		bil<<=1;
+		ans++;
+	}
+	ans++;
+	printf("%d\n",ans);
 	return 0;
 };

@@ -15,15 +15,27 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-int main(){
-	int n;
-	string kata[201];
-	scanf("%d",&n);
-	int banyak = 2*n-2;
-	string kata1, kata2;
-	for(i=0;i<banyak;i++){
-		cin>>kata[i];
-		if(kata[i].length())
+int p[200010];
+
+void back(int n){
+	if(n == 1){printf("1 "); return;}
+	while(n!=1){
+		back(p[n]);
+		printf("%d ",n);
+		return;
 	}
+
+}
+
+int main(){
+	int n,i,j;
+	scanf("%d",&n);
+	
+	p[1] = -1;
+	for(i=2;i<=n;i++){
+		scanf("%d",&p[i]);
+	}
+	back(n);
+	printf("\n");
 	return 0;
 };

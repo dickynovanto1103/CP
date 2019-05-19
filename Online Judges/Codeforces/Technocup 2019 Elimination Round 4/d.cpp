@@ -15,15 +15,24 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
+vector<vi> AdjList;
+
 int main(){
-	int n;
-	string kata[201];
-	scanf("%d",&n);
-	int banyak = 2*n-2;
-	string kata1, kata2;
-	for(i=0;i<banyak;i++){
-		cin>>kata[i];
-		if(kata[i].length())
+	int n,s,i,j;
+	scanf("%d %d",&n,&s);
+	AdjList.assign(n+1, vi());
+	for(i=0;i<n-1;i++){
+		int a,b;
+		scanf("%d %d",&a,&b);
+		AdjList[a].pb(b); AdjList[b].pb(a);
 	}
+	int cnt = 0;
+	for(i=1;i<=n;i++){
+		if(AdjList[i].size() == 1){
+			cnt++;
+		}
+	}
+	double ans = ((double)s*2.0) / (double)cnt;
+	printf("%.9lf\n",ans);
 	return 0;
 };

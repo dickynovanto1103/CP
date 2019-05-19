@@ -16,14 +16,29 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	int n;
-	string kata[201];
-	scanf("%d",&n);
-	int banyak = 2*n-2;
-	string kata1, kata2;
-	for(i=0;i<banyak;i++){
-		cin>>kata[i];
-		if(kata[i].length())
+	int n,x,y;
+	scanf("%d %d %d",&n,&x,&y);
+	string s;
+	int i;
+	cin>>s;
+	reverse(s.begin(), s.end());
+	// cout<<s<<endl;
+	int ans = 0;
+	for(i=0;i<=y;i++){
+		if(i == y){
+			if(s[i] != '1'){
+				ans++;
+			}
+		}else{
+			if(s[i] != '0'){
+				ans++;
+			}
+		}
 	}
+	// printf("ans: %d\n",ans);
+	for(i=y+1;i<x;i++){
+		if(s[i]!='0'){ans++;}
+	}
+	printf("%d\n",ans);
 	return 0;
 };

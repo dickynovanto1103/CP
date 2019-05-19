@@ -16,14 +16,28 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	int n;
-	string kata[201];
-	scanf("%d",&n);
-	int banyak = 2*n-2;
-	string kata1, kata2;
-	for(i=0;i<banyak;i++){
-		cin>>kata[i];
-		if(kata[i].length())
+	string str;
+	set<string> st;
+
+	while(getline(cin, str)) {
+		stringstream s(str);
+		string kata;
+		bool first = true;
+		while(s >> kata) {
+			string lower = "";
+			if(!first){printf(" ");}
+			for(int i=0;i<kata.length();i++){
+				lower += tolower(kata[i]);
+			}
+			if(st.find(lower) != st.end()){
+				printf(".");
+			}else{
+				cout<<kata;
+				st.insert(lower);
+			}
+			first = false;
+		}
+		printf("\n");
 	}
 	return 0;
 };

@@ -16,14 +16,14 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	int n;
-	string kata[201];
-	scanf("%d",&n);
-	int banyak = 2*n-2;
-	string kata1, kata2;
-	for(i=0;i<banyak;i++){
-		cin>>kata[i];
-		if(kata[i].length())
+	int a,b,a1,b1,c;
+	scanf("%d %d %d %d %d",&a,&b,&a1,&b1,&c);
+	int selisih = abs(a-a1) + abs(b-b1);
+	if(selisih > c){printf("N\n");}
+	else{
+		c -= selisih;
+		if(c & 1){printf("N\n");}
+		else{printf("Y\n");}
 	}
 	return 0;
 };

@@ -138,6 +138,7 @@ void computeLCP() {
 	}
 	for(i=0;i<n;i++){//compute LCP in O(n)
 		LCP[i] = PLCP[SA[i]];//put the permuted LCP to the correct possition
+		printf("LCP[%d]: %d\n",i,LCP[i]);
 	}
 }
 
@@ -165,7 +166,7 @@ ii LCS() { //return pair lcs length and its index
 
 
 int main() {
-	T = "dicky$novanto$";
+	T = "AAAAAA$";
 	n = T.length();
 	constructSA();
 	computeLCP();

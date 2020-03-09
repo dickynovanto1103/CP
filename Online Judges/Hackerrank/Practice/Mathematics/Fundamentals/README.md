@@ -1,0 +1,3 @@
+### Things to Learn
+1. Reverse Game
+	- If we are reversing array of size n, n times with the order of explained in the problem, then we will got the pattern of a[n-1], a[0], a[n-2], a[1], ...

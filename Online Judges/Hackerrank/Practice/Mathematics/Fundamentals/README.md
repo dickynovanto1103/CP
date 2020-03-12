@@ -12,3 +12,4 @@
 			- dikali:
 				[0 8]
 				[0 2]
+	- Dari problem ini juga belajar bagaimana melakukan power dengan cara iteratif. Ide: nilai power dijadikan binary number, dan jika power % 2 == 1, dikalikan dengan nilai pengali, sedangkan nilai pengali pada setiap iterasi dikuadratkan, karena nilai binary dari kanan ke kiri: selalu dalam bentuk 2 pangkat: 1,2,4,..., sehingga total exponent bila ditambah perlu seperti nilai power itu, sehingga base^1 x base^2 x base^4 ... = base^power

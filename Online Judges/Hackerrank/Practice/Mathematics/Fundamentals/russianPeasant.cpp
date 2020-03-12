@@ -53,17 +53,27 @@ Mat mul(Mat a, Mat b, int mod) {
 
 Mat identity;
 
+//iterative pow is much faster
 Mat pow(Mat a, ll power, int mod) {
-	if(power == 0){
-		return identity;
-	} else {
-		if(power % 2LL == 1) {
-			return mul(a, pow(a, power-1, mod), mod);
-		} else {
-			Mat temp = pow(a, power / 2LL, mod);
-			return mul(temp, temp, mod);
+	Mat temp = identity;
+	while(power) {
+		if(power % 2 == 1) {
+			temp = mul(temp, a, mod);
 		}
+		a = mul(a,a,mod);
+		power /= 2;
 	}
+	return temp;
+	// if(power == 0){
+	// 	return identity;
+	// } else {
+	// 	if(power % 2LL == 1) {
+	// 		return mul(a, pow(a, power-1, mod), mod);
+	// 	} else {
+	// 		Mat temp = pow(a, power / 2LL, mod);
+	// 		return mul(temp, temp, mod);
+	// 	}
+	// }
 }
 
 Mat initIdentity(int lenRowCol) {

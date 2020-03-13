@@ -13,3 +13,7 @@
 				[0 8]
 				[0 2]
 	- Dari problem ini juga belajar bagaimana melakukan power dengan cara iteratif. Ide: nilai power dijadikan binary number, dan jika power % 2 == 1, dikalikan dengan nilai pengali, sedangkan nilai pengali pada setiap iterasi dikuadratkan, karena nilai binary dari kanan ke kiri: selalu dalam bentuk 2 pangkat: 1,2,4,..., sehingga total exponent bila ditambah perlu seperti nilai power itu, sehingga base^1 x base^2 x base^4 ... = base^power
+3. Filling Jars
+	- Terdapat 2 solusi menyelesaikan problem ini:
+		1. Menggunakan array sebanyak N elemen dan untuk setiap M query, dengan tiap query yaitu menambahkan semua elemen dari a sampai b sebanyak k, maka caranya adalah arr[a] += k; ans[b+1] -= k;. Lalu dilakukan prefix sum dan mentotal semua nilai dan mendapatkan rata-rata.
+		2. Kita tidak peduli diletakkan pada elemen array dimana, kita hanya peduli dengan total bola yang ditaruh pada jars, sehingga hanya menjumlahkan setiap (b-a + 1) * k;, kemudian dicari rata-rata.

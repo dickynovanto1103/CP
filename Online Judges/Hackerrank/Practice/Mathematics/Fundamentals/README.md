@@ -21,3 +21,7 @@
 	- Kita harus tau properti gcd, salah satunya adalah gcd(a,b) = gcd(a + m * b, b) = gcd(a, b + m * a).
 	- Dalam kasus problem ini, m = 1 atau -1, sehingga dengan dilakukan operasi tersebut, nilai GCD nya tetap sama, sehingga solusinya hanyalah dilakukan pengecekan gcd(a,b) == gcd(x,y)
 	- Note: usaha yang saya lakukan awalnya adalah dengan melakukan simulasi BFS dari (a,b), lalu saya mencari pola dari setiap a, dan ditemukan pola, x selalu habis dibagi oleh gcd dan gcd(x,y) == gcd(a,b). Ternyata gcd(x,y) == gcd(a,b) sudahlah merupakan syarat cukup.
+5. Sumar and Floating Rocks
+	- This problem asks about the integral coordinate that can lie between 2 coordinate. How many is the integral coordinate?
+	- We can use gradient, for example gradient: 1/2, that means that we can decrease / increase x by 1 and decrease / increase y by 2 to get another integral coordinate.
+		- The corner case is always about infinite gradient, we need to take care of that. 

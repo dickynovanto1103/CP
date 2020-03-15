@@ -76,7 +76,7 @@ int main(){
 	while(tc--){
 		scanf("%lld %lld %lld %lld",&a,&b,&c,&d);
 		ll g = __gcd(a,b);
-		if(c % g == 0 && __gcd(c,d) == g){printf("YES\n");}
+		if(__gcd(c,d) == g){printf("YES\n");}
 		else{printf("NO\n");}
 	}
 	return 0;

@@ -17,3 +17,7 @@
 	- Terdapat 2 solusi menyelesaikan problem ini:
 		1. Menggunakan array sebanyak N elemen dan untuk setiap M query, dengan tiap query yaitu menambahkan semua elemen dari a sampai b sebanyak k, maka caranya adalah arr[a] += k; ans[b+1] -= k;. Lalu dilakukan prefix sum dan mentotal semua nilai dan mendapatkan rata-rata.
 		2. Kita tidak peduli diletakkan pada elemen array dimana, kita hanya peduli dengan total bola yang ditaruh pada jars, sehingga hanya menjumlahkan setiap (b-a + 1) * k;, kemudian dicari rata-rata.
+4. Possible Path
+	- Kita harus tau properti gcd, salah satunya adalah gcd(a,b) = gcd(a + m * b, b) = gcd(a, b + m * a).
+	- Dalam kasus problem ini, m = 1 atau -1, sehingga dengan dilakukan operasi tersebut, nilai GCD nya tetap sama, sehingga solusinya hanyalah dilakukan pengecekan gcd(a,b) == gcd(x,y)
+	- Note: usaha yang saya lakukan awalnya adalah dengan melakukan simulasi BFS dari (a,b), lalu saya mencari pola dari setiap a, dan ditemukan pola, x selalu habis dibagi oleh gcd dan gcd(x,y) == gcd(a,b). Ternyata gcd(x,y) == gcd(a,b) sudahlah merupakan syarat cukup.

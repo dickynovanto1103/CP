@@ -35,16 +35,51 @@ void processDP() {
 	}
 }
 
+ll fac[201];
+ll invFac[201];
+
+ll modPow(ll a, ll b){
+	if(b == 0){
+		return 1;
+	}else{
+		if(b%2 == 1){
+			return a*modPow(a,b-1)%mod;
+		}else{
+			ll temp = modPow(a,b/2);
+			return temp*temp%mod;
+		}
+	}
+}
+
+void processFac() {
+	int i,j;
+	fac[0] = invFac[0] = 1;
+	for(i=1;i<=200;i++){
+		fac[i] = (ll)i*fac[i-1];
+		fac[i] %= mod;
+		invFac[i] = modPow(fac[i], mod-2);
+	}
+}
+
+ll c(int a, int b) {
+	ll bil1 = fac[a]*invFac[b];
+	bil1 %= mod;
+	ll bil2 = bil1*invFac[a-b];
+	bil2 %= mod;
+	return bil2;
+}
+
 int main(){
 	int tc,i,j;
 
-	processDP();
+	// processDP();
+	processFac();
 
 	scanf("%d",&tc);
 	while(tc--){
 		int n,m;
 		scanf("%d %d",&n,&m);
-		printf("%d\n",dp[n][m]);
+		printf("%lld\n",c(n+m,n));
 	}
 	return 0;
 };

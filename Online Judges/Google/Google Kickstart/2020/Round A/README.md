@@ -22,3 +22,16 @@
 		- We can binary search the answer. We divide the diff to produce vector / array that contains elements <= the answer (mid). 
 		- If we can do this, try smaller answer. else try bigger number
 		- This is correct because we can guarantee that in each guessing the answer, we will not over-dividing the diff number as the only goal is to get to the answer (mid).
+4. Problem D (Bundling)
+	- The problem is that we need to group N strings into N/K groups with each group having K strings. We need to maximize the score of longest matching prefix in total from each group.
+	- This problem is solved after the contest time, during the contest time, I tried a bunch of ideas, but none seems to work as I always thought how to assign a particular string into a group and something like maxflow surely doesn't work
+	- The solution for this problem turns out to be quite simple. We just need to count how many prefix Pi is in the string list and then just increase the answer with floor(count(Pi) / k) as we only want to group with k elements.
+	- Important observation:
+		- Let's say we have string A: DICKY and string B: DIKI, the longest prefix is DI and it brings value 2. 
+		- Instead of directly determining value 2 (thus directly determining that string A and B should be on a same group which is still undeterministic), we just count D and DI separately. 
+		- The value 2 comes from 1 + 1 anyway, so we can just count the number of strings that contains D as prefix, and the number strings that have DI as their prefix.
+	- For small constraint: we can directly put the string prefixes into hash map (space complexity: O(N * 5 * 5))
+	- For big constraint: 
+		- we can hash the prefix of the string and add counter using map
+		- we can create trie and maintain the count in each node for further query.
+	

@@ -41,6 +41,53 @@ void shiftLeft(int banyakShift, int k) {
 	}
 }
 
+ll solve1(int n, int k) {
+	reset(k);
+	ll ans = 0;
+	int tot = 0;
+	int i;
+	for(i=0;i<n;i++){
+		tot += a[i];
+		tot %= k;
+		cnt[tot]++;
+	}
+
+	assert(cnt[0] >= 0);
+	ans += cnt[0];
+	for(i=0;i<n-1;i++){
+		int mod = a[i] % k;
+		cnt[mod]--;
+		assert(cnt[mod] >= 0);
+
+		shiftLeft(mod, k);
+		assert(cnt[0] >= 0);
+
+		ans += cnt[0];
+	}
+	return ans;
+}
+
+ll solve2(int n, int k) {
+	int i,j;
+	reset(k);
+	cnt[0] = 1; //before adding the first element, the sum = 0
+	int tot = 0;
+	for(i=0;i<n;i++){
+		tot += a[i];
+		tot %= k;
+		cnt[tot]++;
+		// printf("a[%d]: %d cnt[%d]: %d\n",i, a[i], tot, cnt[tot]);
+	}
+
+	ll ans = 0;
+	for(i=0;i<k;i++){
+		ll tambah = ((ll)cnt[i]*(cnt[i]-1))/2LL;
+		assert(tambah >= 0);
+		ans += tambah;
+	}
+	return ans;
+}
+
 int main(){
 	int tc,i,j,n,k;
 	scanf("%d",&tc);
@@ -50,28 +97,9 @@ int main(){
 		for(i=0;i<n;i++){
 			scanf("%d",&a[i]);
 		}
-		reset(k);
-		ll ans = 0;
-		int tot = 0;
-		for(i=0;i<n;i++){
-			tot += a[i];
-			tot %= k;
-			cnt[tot]++;
-		}
-
-		assert(cnt[0] >= 0);
-		ans += cnt[0];
-		for(i=0;i<n-1;i++){
-			int mod = a[i] % k;
-			cnt[mod]--;
-			assert(cnt[mod] >= 0);
-
-			shiftLeft(mod, k);
-			assert(cnt[0] >= 0);
-
-			ans += cnt[0];
-		}
-		printf("%lld\n",ans);
+		
+		// printf("%lld\n",solve1(n, k));
+		printf("%lld\n",solve2(n, k));
 	}
 	return 0;
 };

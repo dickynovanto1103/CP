@@ -43,6 +43,7 @@ int main(){
 		for(int i=1;i<=b;i++){
 			printf("%d",arr[i]);
 		}
+		printf("\n");
 		fflush(stdout);
 		string ans;
 		cin>>ans;

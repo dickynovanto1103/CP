@@ -22,7 +22,15 @@ int main(){
 	while(tc--){
 		scanf("%d",&n);
 		scanf("%d %d %d %d",&a,&b,&c,&d);
-		int cnt = 0;
+		map<int,int> cnt;
+		for(i=0;i<=b;i++){
+			if(i*2 > n){break;}
+			for(j=0;j<=a;j++){
+				if((i*2 + j) > n){break;}
+				cnt[i*2+j]++;
+			}
+		}
+		int ans = 0;
 		for(i=0;i<=d;i++){
 			int now = i*10;
 			if(now > n){break;}
@@ -30,16 +38,10 @@ int main(){
 				int temp = now;
 				temp += (j*5);
 				if(now > n){break;}
-				for(k=0;k<=b;k++){
-					int temp1 = temp;
-					temp1 += (k*2);
-					if(temp1 > n){break;}
-					int sisa = n - temp1;
-					if(sisa <= a){cnt++;}
-				}
+				ans += cnt[n - temp];
 			}
 		}
-		printf("%d\n",cnt);
+		printf("%d\n",ans);
 	}
 	return 0;
 };

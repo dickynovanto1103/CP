@@ -23,4 +23,7 @@
 	- If we are dealing with finite number of coins, then in order to get the value N using the finite number of coins, we can use bruteforce with pruning
 	- The idea is, we should iterate the largest denomination first since it will make the iteration faster, then we break from the iteration if the total value is already exceeding N. This is pruning. We can use 3 largest denomination, and decide whether the we can make N with the smallest coin. This approach is having complexity: O(B*C*D)
 	- The alternative solution is to precompute the 2 smallest denomination, we iterate all possibilities and we use map / array to maintain the count. Then we can iterate using 2 nested for loops for the 2 largest denomination, then we use the count array. Complexity: O(max(A*B), max(C*D)). This is a better solution.
-		
+4. Mehta and Supermarket
+	- This problem uses Combinatorics: Inclusion exclusion principle. This is used for counting the number of elements inside the venn diagram without double counting it.
+	- For union of even elements, we must subtract the number, else, we add the number
+	- Just do 2^n iteration and keep the LCM value, we must be aware that the LCM value can be overflow, thus we need uint64_t.

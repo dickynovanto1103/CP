@@ -1,0 +1,15 @@
+1. [Problem D](https://codeforces.com/contest/1366/problem/D)
+	- This is an interesting problem
+	- At first, I realized that brute force solution will be TLE:
+		- The brute force solution: get all divisors of a number, then do O(n^2) check divisors addition
+	- So I thought about factorization solution, so maybe we only need to care about the prime factors. The complexity here is O(log(val)). So it should be okay.
+	- Maybe I thought that doing O(n^2) bruteforce addition in the prime factors will work. But surely, I was not sure about this. And yeah. WA!
+		- The problem with this approach is that: there is no prove that this will work, and in some cases, there is an answer meanwhile my program said no answer.
+	- I couldn't figure out the solution and I looked at the editorial
+	- So my first step is correct: getting all the prime factors. Then what must we do about the prime factors?
+	- Let's say we have prime factors: p1, p2, ..., pk.
+		- If k == 1, it's obvious that there is no answer
+		- else, we can decide that d1 = p1 * p2 * ... * px and d2 = p(x+1) * ... * pk, and that's the answer.
+	- Why this solution will works?
+		- Let's take a look at a certain prime factors (pi). pi = 0 (mod a[i]) and let's assume that d1 = 0 (mod pi), then d2 != 0 (mod pi)
+		- then (d1 + d2) != 0 (mod pi). In other words, there is no prime factor of a[i] that can divide (d1 + d2). So (d1 + d2) != 0 (mod a[i]).

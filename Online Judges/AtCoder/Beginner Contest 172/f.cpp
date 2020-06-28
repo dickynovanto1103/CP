@@ -20,34 +20,46 @@ uint64 a[301];
 
 uint64 firstPile;
 
-ii findAB(uint64 sum, uint64 sor) { 
-    uint64 A = (sum - sor)/2;
+ii findAB(ll sum, ll sor) {
+	if(sum < sor){
+		printf("-1\n");
+		exit(0);
+	}
+    ll A = (sum - sor + 1)/2LL;
   
-    uint64 a = 0, b = 0; 
-  
-    for (int i=0;i < 63; i++) { 
-        uint64 xi = (sor & (1LL << i)); 
-        uint64 ai = (A & (1LL << i));
-        if(xi == 0 && ai > 0) {
+    ll a = 0, b = 0;
+    // printf("sum: %lld sor: %lld\n",sum, sor);
+
+    for(int i=50;i>=0;i--){
+    	uint64 Xi = (sor & (1LL << i)); 
+        uint64 Ai = (A & (1LL << i));
+    	if(Xi == 0 && Ai > 0) {
         	a = ((1LL << i) | a);
         	b = ((1LL << i) | b);
+        	// printf("a jadi: %lld\n", a);
         }
     }
 
-
-    for(int i=62;i>=0;i--){
+    for(int i=50;i>=0;i--){
     	uint64 Xi = (sor & (1LL << i)); 
         uint64 Ai = (A & (1LL << i));
     	if(Xi == 0 && Ai == 0){
 
+        }else if(Xi == 0 && Ai > 0) {
+
         }
         else if (Xi > 0 && Ai == 0) { 
-        	if((a + (1LL<<i)) > firstPile) {
+        	if((a | (1LL<<i)) > firstPile) {
         		b = ((1LL << i) | b);
         		continue;
         	}
             a = ((1LL << i) | a);  
-        } 
+            // printf("a disini: %lld firstPile: %lld\n",a, firstPile);
+        } else{
+        	// printf("sini\n");
+        	printf("-1\n");
+        	exit(0);
+        }
  
     }
   
@@ -72,33 +84,43 @@ int main(){
 	firstPile = a[0];
 	ii ans = findAB(sum, sor);
 	uint64 pertama = ans.first, kedua = ans.second;
-	// printf("%lld %lld\n",pertama, kedua);
-	if(pertama <= a[0] && kedua <= a[0]){
-		uint64 maks = max(pertama, kedua);
-		if(maks == 0){
-			printf("-1\n");
-		}else{
-			cout<<a[0] - maks<<endl;
-			// printf("%lld\n",a[0] - maks);	
-		}
-	}else if(pertama > a[0] && kedua <= a[0]){
-		if(kedua == 0) {
-			printf("-1\n");
-		}else{
-			cout<<a[0] - kedua<<endl;
-			// printf("%lld\n",a[0] - kedua);	
-		}
-		
-	}else if(pertama <= a[0] && kedua > a[0]){
-		if(pertama == 0) {
-			printf("-1\n");
-			return 0;
-		}
-		cout<<a[0] - pertama<<endl;
-		// printf("%lld\n",a[0] - pertama);
-	}else{
-		printf("-1\n");
+	if((a[0] ^ a[1]) == sor){
+		printf("0\n");
+		return 0;
 	}
+	// cout<<pertama << " "<<kedua<<endl;
+	if (pertama == 0 || pertama > a[0]) {
+		printf("-1\n");
+	}else{
+		cout << a[0] - pertama << endl;
+	}
+	// printf("%lld %lld\n",pertama, kedua);
+	// if(pertama <= a[0] && kedua <= a[0]){
+	// 	uint64 maks = max(pertama, kedua);
+	// 	if(maks == 0){
+	// 		printf("-1\n");
+	// 	}else{
+	// 		cout<<a[0] - maks<<endl;
+	// 		// printf("%lld\n",a[0] - maks);	
+	// 	}
+	// }else if(pertama > a[0] && kedua <= a[0]){
+	// 	if(kedua == 0) {
+	// 		printf("-1\n");
+	// 	}else{
+	// 		cout<<a[0] - kedua<<endl;
+	// 		// printf("%lld\n",a[0] - kedua);	
+	// 	}
+		
+	// }else if(pertama <= a[0] && kedua > a[0]){
+	// 	if(pertama == 0) {
+	// 		printf("-1\n");
+	// 		return 0;
+	// 	}
+	// 	cout<<a[0] - pertama<<endl;
+	// 	// printf("%lld\n",a[0] - pertama);
+	// }else{
+	// 	printf("-1\n");
+	// }
 
 	// //2 pertama klo dixor harus sor
 	// ll temp = 1000000000000LL;

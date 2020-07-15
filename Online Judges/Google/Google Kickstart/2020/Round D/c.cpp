@@ -16,6 +16,8 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
+vector<vi> adj;
+
 int main(){
 	int n,a,b,i,j, tc;
 	scanf("%d",&tc);
@@ -24,8 +26,10 @@ int main(){
 	for(int tt=1;tt<=tc;tt++){
 		printf("Case #%d: ",tt);
 		scanf("%d %d %d",&n,&a,&b);
+		adj.assign(n+1, vi());
 		for(i=2;i<=n;i++){
 			scanf("%d",&p[i]);
+			adj[p[i]].pb(i);
 		}
 
 		int cnt = 0;

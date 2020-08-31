@@ -22,9 +22,9 @@ ll lastTimePlay[100001];
 struct Cmp {
 	bool operator()(const iii& a, const iii& b) {
 		if(a.first.first == b.first.first) {
-			return a.first.second < b.first.second;
+			return a.first.second > b.first.second;
 		}
-		return a.first.first > b.first.first;
+		return a.first.first < b.first.first;
 	}
 };
 
@@ -35,7 +35,7 @@ int main(){
 	for(int tt=1;tt<=tc;tt++){
 		printf("Case #%d: ",tt);
 		scanf("%d",&n);
-		priority_queue<iii> pq;
+		priority_queue<iii, vector<iii>, Cmp > pq;
 		ll sum = 0;
 		for(i=0;i<n;i++){
 			scanf("%d %d",&a[i],&b[i]);
@@ -48,14 +48,17 @@ int main(){
 		for(i=0;i<n;i++){
 			cursum += a[i];
 			pq.push(iii(ii(a[i] + b[i], a[i]), i));	
+			// printf("push: %d %d %d\n",a[i] + b[i], a[i], i);
 			while(!pq.empty()) {
 				iii front = pq.top();
 				int cur = front.first.first, idx = front.second;
+				// printf("%d %d %d\n",cur, front.first.second, idx);
 				if(cur > sum) {
 					sum -= a[idx];
 					cursum -= 2*a[idx];
 					cnt++;
 					pq.pop();
+					// printf("pop\n");
 					if(ans < cursum) {
 						ans = cursum;
 						ansCnt = cnt;

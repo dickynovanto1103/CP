@@ -132,7 +132,7 @@ int main(){
 			last = iii(ii(start, end), height);
 			p[i] = kel + p[i-1];
 			p[i] %= mod;
-			printf("p[%d]: %lld kel: %lld\n",i, p[i], kel);
+			// printf("p[%d]: %lld kel: %lld\n",i, p[i], kel);
 			
 			
 		}

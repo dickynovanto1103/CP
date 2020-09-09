@@ -82,12 +82,13 @@ int main(){
 				nodeTerjauh2 = i;
 			}
 		}
-		if(diameter <= 2*da){
+		if(diameter <= 2*da){ //this condition can be always winning for alice because she can just wait at the center of the tree, and whatever bob's next move is, alice can just capture bob
 			cout<<alice<<endl;
 			continue;
 		}
 
-		if(db > 2*da){ //salah...harusnya db > 2*da
+		if(db > 2*da){ //bukan diameter >= db...harusnya db > 2*da, this is because there are 2 possible cases:
+			//1. after alice's first move, if there is area 
 			cout<<bob<<endl;
 		}else{
 			cout<<alice<<endl;

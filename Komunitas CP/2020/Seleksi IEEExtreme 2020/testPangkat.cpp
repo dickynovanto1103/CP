@@ -17,12 +17,15 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	double pNoBirthdayAtSameDay = 1;
-	for(int i=1;i<40;i++){
-		pNoBirthdayAtSameDay *= (365.0 - i) / 365.0;
+	int bil = 10282545;
+	int faktor = 5;
+	int cnt = 0;
+	while(bil % faktor == 0){
+		cnt++;
+		bil /= faktor;
+		printf("bil: %d\n", bil);
 	}
-	printf("%.9lf\n", pNoBirthdayAtSameDay);
-	printf("%.9lf\n", 1- pNoBirthdayAtSameDay);
+	printf("cnt: %d\n",cnt);
 	
 	return 0;
 };

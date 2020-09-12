@@ -17,12 +17,15 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	double pNoBirthdayAtSameDay = 1;
-	for(int i=1;i<40;i++){
-		pNoBirthdayAtSameDay *= (365.0 - i) / 365.0;
+	int n = 8;
+	int prime[] = {3,5,7,11, 13, 17, 23, 31, 37};
+	srand(time(NULL));
+	printf("%d\n",n);
+	for(int i=0;i<n;i++){
+		int bil = rand()%9;
+		printf("%d ",prime[bil]);
 	}
-	printf("%.9lf\n", pNoBirthdayAtSameDay);
-	printf("%.9lf\n", 1- pNoBirthdayAtSameDay);
+	printf("\n");
 	
 	return 0;
 };

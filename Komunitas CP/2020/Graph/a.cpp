@@ -17,12 +17,26 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	double pNoBirthdayAtSameDay = 1;
-	for(int i=1;i<40;i++){
-		pNoBirthdayAtSameDay *= (365.0 - i) / 365.0;
+	int n,i,j;
+	vector<vi> out, in;
+	scanf("%d",&n);
+	out.assign(n+1, vi());
+	in.assign(n+1, vi());
+	for(i=1;i<=n;i++){
+		int a;
+		scanf("%d",&a);
+		out[i].pb(a);
+		in[a].pb(i);
 	}
-	printf("%.9lf\n", pNoBirthdayAtSameDay);
-	printf("%.9lf\n", 1- pNoBirthdayAtSameDay);
+
+	for(i=1;i<=n;i++){
+		int outDariI = out[i][0];
+		if(out[outDariI].size() && in[i].size() && in[i][0] == out[outDariI][0]) {
+			printf("YES\n");
+			return 0;
+		}
+	}
+	printf("NO\n");
 	
 	return 0;
 };

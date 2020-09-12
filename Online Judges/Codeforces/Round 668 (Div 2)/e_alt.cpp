@@ -39,17 +39,29 @@ void update(int idx, int val) {
 }
 
 int findLargestIdx(int target, int maksIdx) { //the idea here is that we want to know the least length needed to the left to make the particular target can be removed..O(log^2(n))
-	int kiri = 1, kanan = maksIdx, mid, ans = -1;
-	while(kiri <= kanan){
-		mid = (kiri + kanan) / 2;
-		if((query(maksIdx) - query(mid-1)) >= target) {
-			ans = mid;
-			kiri = mid+1;
-		}else{
-			kanan = mid-1;
+	int now = query(maksIdx);
+	int tempNow = now;
+	//find the most right idx such that idx <= maksIdx and f(idx, maksIdx) >= target
+	int pos = 0;
+	int logn = int(log2(maksIdx));
+	// printf("logn: %d now: %d maksIdx: %d\n",logn, now, maksIdx);
+
+	for(int i=logn;i>=0;i--){
+		int nextIdx = pos + (1<<i);
+		// printf("pos: %d i: %d nextIdx: %d now: %d bit[%d]: %d\n",pos, i, nextIdx, now, nextIdx, bit[nextIdx]);
+		if(nextIdx <= maksIdx && now - bit[nextIdx] >= target) {
+			pos += (1<<i);
+			now -= bit[nextIdx];
 		}
 	}
-	return ans;
+	if(now == tempNow && now >= target) {
+		return max(pos, 1);
+	}
+	// printf("target: %d maksIdx: %d pos: %d\n", target, maksIdx, pos);
+	if (tempNow == now) { //ga bs berkurang
+		return -1;
+	}
+	return min(pos + 1, maksIdx);
 }
 
 int main(){
@@ -59,6 +71,7 @@ int main(){
 	for(i=1;i<=n;i++){
 		scanf("%d",&a[i]);
 		a[i] = i - a[i];
+		// printf("a[%d]: %d\n",i, a[i]);
 	}
 
 	vector<vi> listKiri, listIdx;
@@ -74,10 +87,8 @@ int main(){
 	}
 
 	for(int r=1;r<=n;r++){
-		// printf("r: %d\n",r);
 		if(a[r] >= 0) {
 			int largestIdx = findLargestIdx(a[r], r);
-			printf("r: %d largestIdx: %d\n",r, largestIdx);
 			update(largestIdx, 1);
 		}
 		for(i=0;i<listKiri[r].size();i++){

@@ -32,7 +32,8 @@ void sieve(int n) {
 }
 
 int main(){
-	int n,i,j;
+	ll n;
+	int i,j;
 	memset(isprime, true, sizeof isprime);
 	sieve(maxn);
 	int cnt = 0;
@@ -41,10 +42,80 @@ int main(){
 			prime[cnt++] = i;
 		}
 	}
-	printf("cnt: %d\n",cnt);
-	scanf("%d",&n);
-	
-	// for(i=0;)
+	scanf("%lld",&n);
+	vi primeFactors;
+	int pangkat[100001];
+	ll ans = 1;
+	for(i=0;i<cnt;i++){
+		ll p = prime[i];
+		if(p > n){break;}
+		if(p * p <= n) {
+			printf("B %lld\n",p);
+			fflush(stdout);
+			int bil;
+			scanf("%d",&bil);
+
+			printf("B %lld\n",p);
+			fflush(stdout);
+			scanf("%d",&bil);
+			if(bil == 1){
+				primeFactors.pb(p);
+				ans *= p;
+				pangkat[p] = 1;
+			}
+		} else {
+			printf("B %lld\n",p);
+			fflush(stdout);
+			int bil;
+			scanf("%d",&bil);
+			if(bil > 1){ //berarti ada dia dan jawabannya yg lebih besar dari current p
+				primeFactors.pb(p);
+				ans *= p;
+				pangkat[p] = 1;
+			}
+		}
+	}
+	if(primeFactors.size() == 0){
+		printf("A 1\n");
+		fflush(stdout);
+		int bil;
+		scanf("%d",&bil);
+		if(bil == 1){
+			printf("C 1\n");
+			fflush(stdout);
+		}else{
+			printf("C 1\n");
+			fflush(stdout);
+		}
+	}else{
+		for(i=0;i<primeFactors.size();i++){
+			ll p = primeFactors[i];
+			ll temp = ans;
+			for(j=0;j<20;j++) {
+				pangkat[p]++;
+				temp *= p;
+				if(temp > n) {
+					temp /= p;
+					pangkat[p]--;
+				}else{
+					printf("B %lld\n", temp);
+					fflush(stdout);
+					int bil;
+					scanf("%d",&bil);
+					assert(bil <= 1);
+					if(bil == 1){
+						ans = temp;
+					}else{ //bil == 0
+						pangkat[p]--;
+						temp /= p;
+						break;
+					}
+				}
+			}
+		}
+		printf("C %lld\n",ans);
+		fflush(stdout);
+	}
 	
 	return 0;
 };

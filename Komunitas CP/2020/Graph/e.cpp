@@ -64,7 +64,14 @@ int main(){
 			int dist1 = dist[s][i];
 			int dist2 = dist[j][t];
 			// printf("i: %d j: %d dist1: %d dist2: %d\n",i,j,dist1, dist2);
+			bool mungkinTambah = false;
 			if(dist1 + dist2 + 1 >= distAwal) {
+				mungkinTambah = true;
+				// cnt++;
+			}
+			dist1 = dist[t][i];
+			dist2 = dist[j][s];
+			if((dist1 + dist2 + 1) >= distAwal && mungkinTambah) {
 				cnt++;
 			}
 		}

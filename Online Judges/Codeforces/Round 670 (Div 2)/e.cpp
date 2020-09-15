@@ -18,7 +18,7 @@ typedef vector<ii> vii;
 
 const int maxn = 1e5;
 bool isprime[maxn + 3];
-int prime[maxn];
+ll prime[maxn];
 
 void sieve(int n) {
 	isprime[0] = isprime[1] = false;
@@ -35,87 +35,99 @@ int main(){
 	ll n;
 	int i,j;
 	memset(isprime, true, sizeof isprime);
-	sieve(maxn);
-	int cnt = 0;
-	for(i=1;i<maxn;i++){
-		if(isprime[i]){
-			prime[cnt++] = i;
-		}
-	}
 	scanf("%lld",&n);
-	vi primeFactors;
-	int pangkat[100001];
-	ll ans = 1;
-	for(i=0;i<cnt;i++){
-		ll p = prime[i];
-		if(p > n){break;}
-		if(p * p <= n) {
-			printf("B %lld\n",p);
-			fflush(stdout);
-			int bil;
-			scanf("%d",&bil);
-
-			printf("B %lld\n",p);
-			fflush(stdout);
-			scanf("%d",&bil);
-			if(bil == 1){
-				primeFactors.pb(p);
-				ans *= p;
-				pangkat[p] = 1;
-			}
-		} else {
-			printf("B %lld\n",p);
-			fflush(stdout);
-			int bil;
-			scanf("%d",&bil);
-			if(bil > 1){ //berarti ada dia dan jawabannya yg lebih besar dari current p
-				primeFactors.pb(p);
-				ans *= p;
-				pangkat[p] = 1;
-			}
+	sieve(n);
+	int cnt = 0;
+	for(i=1;i<=n;i++){
+		if(isprime[i]){
+			prime[++cnt] = i;
 		}
 	}
-	if(primeFactors.size() == 0){
-		printf("A 1\n");
+	
+	ll ans = 1;
+	//divide the prime into several blocks of sqrt...the reason for doing this is that we can periodically check if some number has been deleted / indeed the number is the prime factor
+	// we cannot differentiate them if the result of A p is 1
+
+	//also, we don't need to do B operation twice for number  <= sqrt(N), we can save that operation by checking directly to the real number of expected deleted number by doing simulation
+	int root = (int)sqrt(cnt);
+	// printf("root: %d\n",root);
+	bool vis[100001];
+	memset(vis, false, sizeof vis);
+	int curCnt = n;
+	bool foundSmallest = false;
+	for(i=1;i<=cnt;i++){
+		if(i >= root && ans * prime[i - root + 1] > n){break;} //using this approach, we can be sure that the smallest prime will need to be checked first
+		// if(ans * prime[i] > n) {break;} //don't need to further check, this check is wrong since we will potentially skip checking the smallest possible prime factor that cannot be get
+		printf("B %lld\n",prime[i]);
 		fflush(stdout);
-		int bil;
-		scanf("%d",&bil);
-		if(bil == 1){
-			printf("C 1\n");
-			fflush(stdout);
-		}else{
-			printf("C 1\n");
-			fflush(stdout);
+		int numMul;
+		scanf("%d",&numMul);
+
+		int banyakMulTanpaX = 0;
+		for(j=prime[i];j<=n;j+=prime[i]){
+			if(!vis[j]){
+				banyakMulTanpaX++;
+				vis[j] = true;
+				curCnt--;
+			}
 		}
-	}else{
-		for(i=0;i<primeFactors.size();i++){
-			ll p = primeFactors[i];
-			ll temp = ans;
-			for(j=0;j<20;j++) {
-				pangkat[p]++;
-				temp *= p;
-				if(temp > n) {
-					temp /= p;
-					pangkat[p]--;
+
+		if(banyakMulTanpaX != numMul){
+			//berarti prime ini adalah faktor prima, cari pangkat berapa langsung dengan tanya A p^k
+			ll kali = prime[i];
+			for(ll j = prime[i]*prime[i]; j <= n; j *= prime[i]) {
+				printf("A %lld\n",j);
+				fflush(stdout);
+				int ada;
+				scanf("%d",&ada);
+				if(ada){
+					kali = j;
 				}else{
-					printf("B %lld\n", temp);
+					break;
+				}
+			}
+			ans *= kali;
+		}
+
+		if((i % root == 0 || i == cnt) && !foundSmallest) {
+			//do check with A 1
+			printf("A 1\n");
+			fflush(stdout);
+			int sisaNum;
+			scanf("%d",&sisaNum);
+			if(sisaNum != curCnt) { //berarti ada faktor prima yang merupakan faktor prima tapi ga kecatch di iterasi sebelumnya
+				for(j=i-root+1;j<=i;j++){
+					// printf("j: %d\n",j);
+					printf("A %lld\n",prime[j]);
 					fflush(stdout);
-					int bil;
-					scanf("%d",&bil);
-					assert(bil <= 1);
-					if(bil == 1){
-						ans = temp;
-					}else{ //bil == 0
-						pangkat[p]--;
-						temp /= p;
-						break;
+					int adaX;
+					scanf("%d",&adaX);
+ 
+					if(adaX){
+						ll kali = prime[j];
+						for(ll k=prime[j]*prime[j];k <= n; k*=prime[j]){
+							printf("A %lld\n",k);
+							fflush(stdout);
+							int ada;
+							scanf("%d",&ada);
+							if(ada){
+								kali = k;
+							}else{
+								break;
+							}
+						}
+						ans *= kali;
+						foundSmallest = true;
+						break; //kenapa dibreak, karena bisa jadi abis cek 2 ^ x ketemu, masih cari 3 kali padahal sudah bs didapet di iterasi sebelumnya
 					}
 				}
 			}
 		}
-		printf("C %lld\n",ans);
-		fflush(stdout);
 	}
+
+	assert(ans <= n);
+	printf("C %lld\n",ans);
+	fflush(stdout);
 	
 	return 0;
 };

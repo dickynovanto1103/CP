@@ -46,7 +46,14 @@ int main(){
 		selisih[i] = diff;
 	}
 
-	ll angka = (sum + ar[1] + 1)/2;
+	ll tambah = sum + ar[1];
+	ll angka = 0;
+	if(tambah > 0){
+		angka = (tambah + 1)/2;
+	}else{
+		angka = tambah / 2;
+	}
+
 	printf("%lld\n",angka);
 	int q;
 	scanf("%d",&q);
@@ -57,41 +64,44 @@ int main(){
 		selisih[a] += w;
 		ll cur1 = selisih[b+1];
 		selisih[b+1] -= w;
-		printf("a: %d b: %d w: %d cur: %lld selisih[%d]: %lld cur1: %lld selisih[%d]: %lld\n",a,b,w,cur,a,selisih[a], cur1, b+1, selisih[b+1]);
-		ll now = 0;
-		if(selisih[a] > 0){
-			now = selisih[a];
-		}
+		// printf("a: %d b: %d w: %d cur: %lld selisih[%d]: %lld cur1: %lld selisih[%d]: %lld\n",a,b,w,cur,a,selisih[a], cur1, b+1, selisih[b+1]);
+		if(a != 1){
+			ll now = 0;
+			if(selisih[a] > 0){
+				now = selisih[a];
+			}
 
-		if(cur > 0) {	
-			sum += (now - cur);	
-		}else {
-			sum += now;
+			if(cur > 0) {	
+				sum += (now - cur);	
+			}else {
+				sum += now;
+			}
 		}
 		
-
-		ll now1 = 0;
-		if(selisih[b+1] > 0){
-			now1 = selisih[b+1];
-		}
-		if(cur1 > 0) {
-			sum += (now1 - cur1);
-		}else{
-			sum += now1;
+		if(b != n) {
+			ll now1 = 0;
+			if(selisih[b+1] > 0){
+				now1 = selisih[b+1];
+			}
+			if(cur1 > 0) {
+				sum += (now1 - cur1);
+			}else{
+				sum += now1;
+			}
 		}
 		
 
 		if(a == 1){
 			ar[a] += w; 
 		}
-		printf("sum: %lld ar[1]: %lld\n",sum, ar[1]);
+		// printf("sum: %lld ar[1]: %lld\n",sum, ar[1]);
 		ll tambah = sum + ar[1];
 		ll ans = 0;
-		printf("tambah: %lld\n",tambah);
+		// printf("tambah: %lld sum: %lld ar[1]: %\n",tambah);
 		if(tambah >= 0){
 			ans = (tambah + 1) / 2;
 		}else{
-			ans = (tambah - 1) / 2;
+			ans = tambah / 2;
 		}
 		// ll ans = (sum + ar[1] + 1) / 2;
 		printf("%lld\n",ans);

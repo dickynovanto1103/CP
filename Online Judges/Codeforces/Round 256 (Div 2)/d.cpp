@@ -17,37 +17,47 @@ typedef pair<int,int> ii;
 typedef pair<ll,ii> iii;
 typedef vector<ii> vii;
 
-int main(){
-	int n,m,i,j;
-	ll k;
-	scanf("%d %d %lld",&n,&m,&k);
-	if(n > m){swap(n,m);}
-	ll kurang = 23;
-	ll tambah = 1;
-	int maxWidth = max(n,m);
-	int kolBawah = m, kolAtas = m, rowBawah = n;
+ll n,m;
 
-	for(i=1;i<maxWidth;i++){
-		k -= i;
-		if(k > 0){
-			kolBawah--;
-		}else{
-			k += i;
-			break;
-		}
+ll cntNumSmaller(ll mid) {
+	// printf("mid sekarang: %lld\n",mid);
+	ll banyak = 0;
+	ll i,j;
+	for(i=1;i<=n;i++){
+		ll bagi = mid / i;
+		if(mid % i == 0){
+			bagi--;
+		}	
+		bagi = min(bagi, m);
+		banyak += bagi;
 	}
 	
-	if(i != maxWidth) {
-		for(i=rowBawah;i>=1;i--){
+	// printf("banyakTotal: %lld\n", banyak);
+	return banyak;
+}
 
-			kolBawah++;
+int main(){
+	int i,j;
+	ll k;
+	scanf("%lld %lld %lld",&n,&m,&k);
+	// for(i=1;i<=n;i++){
+	// 	for(j=1;j<=n;j++){
+	// 		printf("%3d",i*j);
+	// 	}
+	// 	printf("\n");
+	// }
+	ll kiri = 1, kanan = n*m, mid, ans;
+	while(kiri <= kanan){
+		mid = (kiri + kanan)/2LL;
+		ll cntSmaller = cntNumSmaller(mid);
+		// printf("mid: %lld cntSmaller: %lld\n",mid, cntSmaller);
+		if(cntSmaller < k){
+			ans = mid;
+			kiri = mid+1;
+		}else{
+			kanan = mid-1;
 		}
 	}
-	while(kolBawah > 1){
-		k -= 
-	}
-	while(k > 0) {
-		k -
-	}
+	printf("%lld\n",ans);
 	return 0;
 };

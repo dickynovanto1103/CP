@@ -21,6 +21,16 @@ const int maxn = 1e5 + 5;
 ll ar[maxn];
 ll selisih[maxn];
 
+ll ceil(ll bil) {
+	ll angka = 0;
+	if(bil > 0){
+		angka = (bil + 1)/2;
+	}else{
+		angka = bil / 2;
+	}
+	return angka;
+}
+
 int main(){
 	//rough idea: 
 	// 1. if q = 0, then we can do binary search of the answer and place the answer at the start of C (since C is non-increasing) and at the end of B (since B is non-decreasing)
@@ -47,12 +57,7 @@ int main(){
 	}
 
 	ll tambah = sum + ar[1];
-	ll angka = 0;
-	if(tambah > 0){
-		angka = (tambah + 1)/2;
-	}else{
-		angka = tambah / 2;
-	}
+	ll angka = ceil(tambah);
 
 	printf("%lld\n",angka);
 	int q;
@@ -66,27 +71,20 @@ int main(){
 		selisih[b+1] -= w;
 		// printf("a: %d b: %d w: %d cur: %lld selisih[%d]: %lld cur1: %lld selisih[%d]: %lld\n",a,b,w,cur,a,selisih[a], cur1, b+1, selisih[b+1]);
 		if(a != 1){
-			ll now = 0;
-			if(selisih[a] > 0){
-				now = selisih[a];
+			if(cur > 0) {
+				sum -= cur;
 			}
-
-			if(cur > 0) {	
-				sum += (now - cur);	
-			}else {
-				sum += now;
+			if(selisih[a] > 0){
+				sum += selisih[a];
 			}
 		}
 		
 		if(b != n) {
-			ll now1 = 0;
-			if(selisih[b+1] > 0){
-				now1 = selisih[b+1];
+			if(cur1 > 0){
+				sum -= cur1;
 			}
-			if(cur1 > 0) {
-				sum += (now1 - cur1);
-			}else{
-				sum += now1;
+			if(selisih[b+1] > 0) {
+				sum += selisih[b+1];
 			}
 		}
 		
@@ -96,13 +94,7 @@ int main(){
 		}
 		// printf("sum: %lld ar[1]: %lld\n",sum, ar[1]);
 		ll tambah = sum + ar[1];
-		ll ans = 0;
-		// printf("tambah: %lld sum: %lld ar[1]: %\n",tambah);
-		if(tambah >= 0){
-			ans = (tambah + 1) / 2;
-		}else{
-			ans = tambah / 2;
-		}
+		ll ans = ceil(tambah);
 		// ll ans = (sum + ar[1] + 1) / 2;
 		printf("%lld\n",ans);
 	}

@@ -33,21 +33,6 @@ int findMinim(int sisi1) {
 	return ans;
 }
 
-int findMax(int sisi1) {
-	int kiri = b, kanan = c, mid, ans = c;
-	while(kiri <= kanan) {
-		mid = (kiri + kanan)/2;
-		int tambah = sisi1 + mid - 1;
-		if(tambah <= d){
-			ans = mid;
-			kiri = mid+1;
-		}else{
-			kanan = mid-1;
-		}
-	}
-	return ans;
-}
-
 int main(){
 	int i,j,k;
 	while(scanf("%d %d %d %d",&a,&b,&c,&d) != EOF) {
@@ -83,21 +68,6 @@ int main(){
 					cnt -= num2;
 				}
 			}
-
-			// ll jarak = maksSisi2 - minimSisi2 + 1;
-			// cnt += (jarak * (jarak+1)) / 2;
-			// ll sisa = c - maksSisi2;
-			// printf("i: %d minimSisi2: %d maksSisi2: %d minimSisi3: %d maksSisi3: %d cntJadi: %lld\n",i, minimSisi2, maksSisi2, minimSisi3, maksSisi3, cnt);
-
-
-			// for(j=b;j<=c;j++){
-			// 	//optimize this
-			// 	int tambah = i + j - 1;
-			// 	if(tambah >= c) {
-			// 		tambah = min(tambah, d);
-			// 		cnt += (tambah - c + 1);
-			// 	}
-			// }
 		}
 		printf("%lld\n",cnt);
 	}

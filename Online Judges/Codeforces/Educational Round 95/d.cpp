@@ -27,101 +27,111 @@ rb_tree_tag,
 tree_order_statistics_node_update>
 ordered_set;
 
-ordered_set s;
-
-int n;
-
-ll f(int mid){
-	int minim = *s.find_by_order(0);
-	int maks = *s.find_by_order(n-1);
-	int tengah = *s.find_by_order(mid);
-	int tengah1;
-	if(mid+1 <= n) {
-		tengah1 = *s.find_by_order(mid+1);
-	}else{
-		tengah1 = maks;
-	}
-	// printf("mid: %d tengah: %d tengah1: %d minim: %d maks: %d\n",mid, tengah, tengah1, minim, maks);
-	return (tengah - minim) + (maks - tengah1);
-}
-
-ll binser() {
-	int kiri = 0, kanan = n-1, mid;
-	ll ans = (ll)inf*(ll)inf;
-	while((kanan - kiri) > 1) {
-		// printf("kiri: %d kanan: %d\n",kiri, kanan);
-		mid = (kiri + kanan)/2;
-		ll ans1 = f(mid);
-		ll ans2 = f(mid+1);
-		// printf("mid: %d ans1: %lld ans2: %lld\n",mid, ans1, ans2);
-		if(ans1 > ans2) {
-			ans = min(ans2, ans);
-			kiri = mid;
-		}else{
-			ans = min(ans1, ans);
-			kanan = mid;
-		}
-	}
-	// printf("%lld\n",ans);
-	return ans;
-}
-
 int main(){
 	
-	int q,i,j;
+	int n,q,i,j;
 	scanf("%d %d",&n,&q);
+	ordered_set s;
+	multiset<int> ms;
+	multiset<int>::iterator mit;
+	int a[100001];
 	for(i=0;i<n;i++){
-		int a;
-		scanf("%d",&a);
-		s.insert(a);
+		scanf("%d",&a[i]);
+		s.insert(a[i]);
+	}
+	sort(a, a+n);
+	ll tot = 0;
+	for(i=0;i<n-1;i++){
+		ms.insert(a[i+1] - a[i]);
+		tot += a[i+1] - a[i];
 	}
 
-	binser();
+	ll biggest = 0;
+	if(ms.size() > 0) {
+		biggest = *ms.rbegin();
+	}
+
+	printf("%lld\n",tot - biggest);
 
 	while(q--){
 		int com, bil;
 		scanf("%d %d",&com,&bil);
+		// printf("com: %d bil: %d\n",com, bil);
+
 		if(com){
+			//sebelum insert check ada ga di setelahnya
+			if(s.size() == 0){
+				s.insert(bil);
+				printf("0\n");
+				continue;
+			}
+			int pos = s.order_of_key(bil);
+			if(pos == s.size()) {
+				int sebelum = *s.find_by_order(pos - 1);
+				ms.insert(bil - sebelum);
+				tot += (bil - sebelum);
+
+			}else if(pos == 0) {
+				int element = *s.find_by_order(0);
+				assert(element - bil > 0);
+				ms.insert(element - bil);
+				tot += (element - bil);
+			}else{
+				int sebelum = *s.find_by_order(pos-1);
+				int sesudah = *s.find_by_order(pos);
+				
+				mit = ms.find(sesudah - sebelum);
+				assert(mit != ms.end());
+				ms.erase(mit);
+				ms.insert(sesudah - bil);
+				ms.insert(bil - sebelum);
+			}
+
 			s.insert(bil);
-			n++;
+
 		}else{
+			if(s.size() == 1){
+				s.erase(bil);
+				printf("0\n");
+				continue;
+			}
+			assert(s.size() > 1);
+			int pos = s.order_of_key(bil);
+			if(pos == 0) {
+				int sesudah = *s.find_by_order(1);
+				mit = ms.find(sesudah - bil);
+				assert(mit != ms.end());
+				ms.erase(mit);
+				tot -= (sesudah - bil);
+			}else if(pos == (int)s.size() - 1) {
+				int sebelum = *s.find_by_order(pos - 1);
+				mit = ms.find(bil - sebelum);
+				assert(mit != ms.end());
+				ms.erase(mit);
+				tot -= (bil - sebelum);
+			}else{
+				assert(s.size() >= 3);
+				int sesudah = *s.find_by_order(pos + 1);
+				int sebelum = *s.find_by_order(pos - 1);
+				mit = ms.find(sesudah - bil);
+				assert(mit != ms.end());
+				ms.erase(mit);
+				mit = ms.find(bil - sebelum);
+				assert(mit != ms.end());
+				ms.erase(mit);
+
+				ms.insert(sesudah - sebelum);
+			}
+
 			s.erase(bil);
-			n--;
 		}
-		ll ans = binser();
-		if(n <= 1){
-			printf("0\n");
-		}else{
-			int bil1 = *s.find_by_order(1);
-			int last = *s.find_by_order(n-1);
-			ans = min(ans, (ll)(last - bil1));
 
-			int bilnminus = *s.find_by_order(n-2);
-			int first = *s.find_by_order(0);
-			ans = min(ans, (ll)(bilnminus-first));
-
+		int kurang = 0;
+		if((int)ms.size() > 0){
+			kurang = *ms.rbegin();
 		}
-		printf("%lld\n",ans);
+		printf("%lld\n",tot - kurang);
 
 	}
-	// s.insert(1);
-	// s.insert(2);
-	// s.insert(4);
-	// s.insert(8);
-	// s.insert(16);
-	// s.erase(16);
-	// printf("find by order\n");
-	// printf("%d\n",*s.find_by_order(0));
-	// printf("%d\n",*s.find_by_order(1));
-	// printf("%d\n",*s.find_by_order(2));
-	// printf("%d\n",*s.find_by_order(3));
-	// printf("%d\n",*s.find_by_order(4));
-	// printf("%d\n",*s.find_by_order(5));
-	// printf("order of key\n");
-	// printf("%lu\n",s.order_of_key(-5));
-	// printf("%lu\n",s.order_of_key(1));
-	// printf("%lu\n",s.order_of_key(2));
-	// printf("%lu\n",s.order_of_key(16));
-	// printf("%lu\n",s.order_of_key(17));
 	return 0;
 };

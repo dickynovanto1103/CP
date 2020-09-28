@@ -19,8 +19,9 @@ typedef vector<ii> vii;
 typedef vector<iii> viii;
 
 ll a[10002];
+int n;
 
-void cetak(int n){
+void cetak(){
 	printf("cetak\n");
 	for(int i=1;i<=n;i++){
 		printf("%lld ",a[i]);
@@ -28,74 +29,102 @@ void cetak(int n){
 	printf("\n");
 }
 
+viii ans;
+
+void process(int i, int j, int x) {
+	a[i] -= (x*i);
+	a[j] += (x*i);
+	debug cetak();
+	assert(a[i] >= 0);
+	assert(a[j] >= 0);
+	ans.pb(iii(ii(i,j), x));
+}
+
+bool cmp(ii a, ii b){
+	return a.first > b.first;
+}
+
 int main(){
-	int tc,i,j,n;
+	int tc,i,j;
 	scanf("%d",&tc);
 	
 	while(tc--){
+		ans.clear();
 		scanf("%d",&n);
 		ll sum = 0;
 		for(i=1;i<=n;i++){
 			scanf("%lld",&a[i]);
 			sum += a[i];
 		}
-		printf("sum: %lld n: %lld\n",sum, n);
+		// printf("sum: %lld n: %d\n",sum, n);
+
 		if(sum % n != 0){
 			printf("-1\n");
 			continue;
 		}
 		ll expected = sum / n;
-		//coba kosongin dulu 
-		viii ans;
+
+		//cari bagi maksimal...ambil maks 3
+		vii listTambah;
 		for(i=2;i<=n;i++){
 			ll bagi = a[i] / i;
 			ll sisa = a[i] % i;
-
-			ans.pb(iii(ii(i, 1), bagi));
-			a[i] = sisa;
-			a[1] += bagi*i;
-			debug cetak(n);
+			if(bagi > 0){
+				listTambah.pb(ii(a[i] - sisa, i));
+				// process(i, 1, bagi);
+			}
 		}
-		bool valid = true;
+		sort(listTambah.begin(), listTambah.end(), cmp);
+		int sz = min(3, (int)listTambah.size());
+		for(i=0;i<sz;i++){
+			ii pas = listTambah[i];
+			int idx = pas.second, tambah = pas.first;
+
+			int bagi = a[idx] / idx;
+			// printf("a[%d]: %d bagi: %d tambah: %d\n",idx, a[idx], bagi, tambah);
+			process(idx, 1, bagi);
+		}
+
+		vii list;
+		for(i=2;i<=n;i++){
+			if(a[i] == 0){continue;}
+			//find nearest divider
+
+			int bagi = (a[i] + i - 1) / i;
+			int harapan = i * bagi;
+
+			int selisih = harapan - a[i];
+			if(selisih > 0){
+				list.pb(ii(selisih, i));
+				// printf("selisih: %d i: %d\n",selisih, i);	
+			}else if(selisih == 0){
+				process(i, 1, bagi);
+			}
+		}
+		sort(list.begin(), list.end());
+		for(i=0;i<list.size();i++){
+			ii pas = list[i];
+			int idx = pas.second, selisih = pas.first;
+			// printf("idx: %d selisih: %d\n",idx, selisih);
+
+			process(1, idx, selisih);
+
+			int bagi = a[idx] / idx;
+			process(idx, 1, bagi);
+		}
+
 		for(i=2;i<=n;i++){
 			if(a[i] == expected){
 				continue;
 			}else if(a[i] < expected) {
 				//tambahin dari satu
 				ll selisih = expected - a[i];
-				ans.pb(iii(ii(1, i), selisih));
-				a[i] += selisih;
-				a[1] -= selisih;
-				if(a[1] < 0){
-					valid = false;
-					break;
-				}
-				debug cetak(n);
+				process(1, i, selisih);
 			}else{
-				ll nearestDivisible = i;
-				ll selisih = nearestDivisible - a[i];
-				ans.pb(iii(ii(1, i), selisih));
-				a[1] -= selisih;
-				a[i] += selisih;
-				if(a[1] < 0){
-					valid = false;
-					break;
-				}
-				ans.pb(iii(ii(i, 1), 1));
-				a[1] += nearestDivisible;
-				a[i] = 0;
-				ans.pb(iii(ii(1, i), expected));
-				//tambahin dari 1 sampe 
-				a[1] -= expected;
-				a[i] = expected;
-				if(a[1] < 0){
-					valid = false;
-					break;
-				}
-				debug cetak(n);
+
 			}
 		}
-		if(!valid){printf("-1\n"); continue;}
+
 		for(i=1;i<=n;i++){
 			assert(a[i] == expected);
 		}

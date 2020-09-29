@@ -18,8 +18,10 @@ typedef vector<ii> vii;
 
 const int maxn = 1e5 + 5;
 
-ll suffMinA[maxn];
+ll prefSumA[maxn];
 ll suffSum[maxn];
+ll suffMax[maxn];
+ll minimD[maxn];
 
 int main(){
 	int n,k,i,j;
@@ -32,43 +34,41 @@ int main(){
 		for(i=1;i<=n;i++){
 			scanf("%lld",&d[i]);
 		}
+		//process suffix
+		ll sum = a[n];
+		suffMax[n] = max(0LL, a[n] - d[n]);
+		suffSum[n] = a[n];
+		for(i=n-1;i>=1;i--) {
+			sum += a[i];
+			suffSum[i] = sum;
+			suffMax[i] = max(suffMax[i+1], sum - d[i]);
+		}
+		prefSumA[1] = a[1];
+		minimD[1] = d[1];
+		for(i=2;i<=n;i++){
+			prefSumA[i] = a[i] + prefSumA[i-1];
+			// printf("prefSumA[%d]: %lld\n",i, prefSumA[i]);
+			minimD[i] = min(minimD[i-1], d[i]);
+		}
 
 		if(k == 0){
-			ll sum = 0;
-			ll ans = 0;
-			for(i=n;i>=1;i--){
-				sum += a[i];
-				ans = max(ans, sum - d[i]);
-			}
-			printf("%lld\n",ans);
+			printf("%lld\n",suffMax[1]);
 			continue;
 		}
 
 		ll ans = max(0LL, a[n] - d[n]);
 
 		if(k == 1){
-			//cuman skip satu
-			//kasus dimana ak bs milih antara 1 .. n-1...ambil minimal d dan jumlahkan semua first n-1 a[i]
-			ll minim = inf;
-			ll sum = 0;
-			for(i=1;i<=n-1;i++){
-				minim = min(minim, d[i]);
-				sum += a[i];
-			}
-			ans = max(ans, sum - minim);
 			//kasus dimana ak cuman skip salah satu dari 2...n-1
+			//
 			///buat kasus ini...ak harus iterasi...dan ditiap iterasi...assume that I start from this element...then I have to know all sum of a from this index to index n, then minus d[i] and min(a[i+1] .. a[N-1])
-			suffMinA[n] = a[n];
-			for(i=n-1;i>=1;i--){
-				suffMinA[i] = min(a[i], suffMinA[i+1]);
-			}
-			suffSum[n] = a[n];
-			for(i=n-1;i>=1;i--){
-				suffSum[i] = a[i] + suffSum[i+1];
-			}
-			for(i=1;i<=n-2;i++) { //maks ak bs mulai skip cuman sampe n-2
-				ll jawab = suffSum[i] - d[i] - suffMinA[i+1];
-				ans = max(ans, jawab);
+			ll maksVal = -inf;
+			for(i=2;i<=n-1;i++){
+				//mulai excite atom dari sebelum i
+				maksVal = max(maksVal + a[i-1], a[i-1] - d[i-1]);
+				ans = max(ans, maksVal + suffSum[i+1] + (a[i] > d[i] ? a[i] - d[i] : 0));
+				//mulai excite atom dari setelah i
+				ans = max(ans, suffMax[i+1]);
 			}
 
 			//coba skip 1
@@ -77,37 +77,16 @@ int main(){
 				ans = max(ans, jawab);
 			}
 
-		}else if(k % 2 == 0){
-			//harusnya bs ambil semua
-			ll minim = inf;
-			ll sum = 0;
-			for(i=1;i<=n;i++) {
-				sum += a[i];
-				if(i < n){ //karena kita ga bs mulai dari index n
-					minim = min(minim, d[i]);
-				}
+			//kasus dimana membentuk back edge (dari i ke 1, 2 <= i <= n-1)...untuk kasus ini, cukup hitung min(d[1]...d[i]) dan prefSumA[i]...lalu tambahkan dengan suffMax[i+1] (karena bs excite lebih dari 1 kali)
+			//ga perlu memperhitungkan kasus dimana dari i ke j, j < i, karena i ke i sudah pasti lebih optimal karena bs memilih pemilihan optimal dari i kemungkinan
+			//IMPLEMENT
+			for(i=2;i<=n-1;i++){
+				// printf("prefSumA[%d]: %lld minimD: %lld suffMax[%d]: %lld\n", i, prefSumA[i], minimD[i], i+1, suffMax[i+1]);
+				ans = max(ans, prefSumA[i] - minimD[i] + suffMax[i+1]);
 			}
-			ans = max(ans, sum - minim);
-			
-		}else {
-			//k ganjil dan k > 1
 
-			//ga bs ambil semua klo start dari index 2...harus salah coba salah satu diskip antara 1...n (kecuali 2 tentu saja) dan cari min(a[1], a[3..n])...
-			//jawabannya adalah sum semua a - min(a[1], a[3..n]) - d[2]
-			//assume klo mulai dari 2
-			// ll jawab = 0;
-			// ll minimum = inf;
-			// ll jumlahSemua = 0;
-			// for(i=1;i<=n;i++){
-			// 	jumlahSemua += a[i];
-			// 	if(i == 2){
-			// 		continue;
-			// 	}else{
-			// 		minimum = min(minimum, a[i]);
-			// 	}
-			// }
-			// ans = max(ans, jumlahSemua - minimum - d[2]);
-			//selain itu..bs ambil semua
+		}else {
+			//bs ambil semua untuk kasus k > 1
 			ll minim = inf;
 			ll sum = 0;
 			for(i=1;i<=n;i++){
@@ -116,6 +95,7 @@ int main(){
 					minim = min(minim, d[i]);
 				}
 			}
+			// printf("sum: %lld minim: %lld\n",sum, minim);
 			ans = max(ans, sum - minim);
 		}
 		printf("%lld\n",ans);

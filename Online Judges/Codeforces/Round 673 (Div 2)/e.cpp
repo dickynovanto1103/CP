@@ -16,19 +16,19 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-// string numToBinary(int n, int digits) {
-// 	string s;
-// 	while(n){
-// 		int bil = n % 2;
-// 		n /= 2;
-// 		s += (bil + '0');
-// 	}
-// 	while(s.size() < digits){
-// 		s += '0';
-// 	}
-// 	reverse(s.begin(), s.end());
-// 	return s;
-// }
+string numToBinary(int n, int digits) {
+	string s;
+	while(n){
+		int bil = n % 2;
+		n /= 2;
+		s += (bil + '0');
+	}
+	while(s.size() < digits){
+		s += '0';
+	}
+	reverse(s.begin(), s.end());
+	return s;
+}
 
 ll computeInv(const vi& a) {
 	int sz = a.size();
@@ -59,23 +59,28 @@ int main(){
 	int n,i,j;
 	int a[300001];
 	while(scanf("%d",&n)!=EOF){
-		// printf("HALOOO\n\n\n\n\n");
+		// printf("HALOOO\n");
 		for(i=0;i<n;i++){
-			scanf("%d",&a[i]);	
+			scanf("%d",&a[i]);
+			// cout<<numToBinary(a[i], 7)<<endl;
 		}
-		vii groups;
-		groups.pb(ii(0, n-1));
-		ll sor = 0;
+		vector<vi> groups;
+		vi awalMula;
+		for(i=0;i<n;i++){awalMula.pb(i);}
+		groups.pb(awalMula);
+
+		int sor = 0;
 		ll numInv = 0;
-		for(i=31;i>=0;i--){
+		for(i=29;i>=0;i--){
 			ll invXor = 0;
 			ll invOri = 0;
 			for(j=0;j<groups.size();j++){
-				ii range = groups[j];
-				int awal = range.first, akhir = range.second;
 				vi inv, asli;
-				for(int k=awal;k<=akhir;k++){
-					if((1LL<<i) & a[k]) {
+				// printf("group %d\n",j);
+				for(int k=0;k<groups[j].size();k++){
+					int idx = groups[j][k];
+					// printf("idx: %d\n",idx);
+					if((1<<i) & a[idx]) {
 						asli.pb(1); inv.pb(0);
 					}else{
 						asli.pb(0); inv.pb(1);
@@ -95,50 +100,44 @@ int main(){
 			//if invXor < invOri, then do inverse, else, don't do inverse
 
 			if(invXor < invOri){
-				sor += (1LL<<i);
+				sor += (1<<i);
 				
 				for(j=0;j<n;j++){
 					a[j] ^= (1LL<<i);
 				}
 
 				numInv += invXor;
+				// printf("numInv tambah invXor: %lld jadi: %lld\n",invXor, numInv);
+				// printf("sor value ditambah %lld jadi: %lld\n",1LL<<i, sor);
 			}else{
 				numInv += invOri;
+				// printf("numInv tambah invOri: %lld jadi: %lld\n",invOri, numInv);
 			}
 
-			vii newGroups;
+			vector<vi> newGroups;
 			for(j=0;j<groups.size();j++){
-				ii range = groups[j];
-				int awal = range.first, akhir = range.second;
-				// printf("awal: %d akhir: %d\n",awal, akhir);
-				int cur = -1;
-				int start = awal, end = awal;
-				for(int k=awal;k<=akhir;k++){
+				vi group0, group1;
+				for(int k=0;k<groups[j].size();k++){
+					int idx = groups[j][k];
 					int nilai;
-					if((1LL<<i) & a[k]) {
-						nilai = 1;
+					if((1<<i) & a[idx]) {
+						group1.pb(idx);
 					}else{
-						nilai = 0;
+						group0.pb(idx);
 					}
-					// printf("k: %d nilai: %d cur: %d\n",k, nilai, cur);
-					if(nilai != cur && cur != -1) {
-						newGroups.pb(ii(start, end));
-						// printf("k: %d push newgroups di tengah: %d %d\n",k, start, end);
-						start = k, end = k;
-					}else{
-						end = k;
-					}
-					cur = nilai;
 				}
-				newGroups.pb(ii(start, end));
-				// printf("push newgroups: %d %d\n",start, end);
+				if(group1.size()){
+					newGroups.pb(group1);	
+				}
+				if(group0.size()){
+				 	newGroups.pb(group0);
+				}
 			}
-			groups.clear();
 			groups = newGroups;
 
 
 		}
-		printf("%lld %lld\n",numInv, sor);
+		printf("%lld %d\n",numInv, sor);
 	}
 	
 	

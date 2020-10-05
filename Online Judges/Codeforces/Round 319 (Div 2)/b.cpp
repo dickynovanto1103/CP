@@ -16,12 +16,44 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
+int a[1000001];
+int dp[1001][1001][2];
+int n,m;
+
+int solve(int idx, int sumMod, int added) {
+	// printf("idx: %d sumMod: %d added: %d\n", idx, sumMod, added);
+	if(sumMod == 0 && added){
+		return 1;
+	}
+	if(idx == n){
+		return 0;
+	}
+
+	int& ans = dp[idx][sumMod][added];
+
+	if(ans != -1){
+		return ans;
+	}
+	return ans = max(solve(idx+1, (sumMod + a[idx]) % m, 1), solve(idx+1, sumMod, added));
+}
+
 int main(){
-	int n,m,i,j;
+	int i,j;
+	
 	while(scanf("%d %d",&n,&m)!=EOF) {
+		
 		for(i=0;i<n;i++){
-			
+			scanf("%d",&a[i]);
+			a[i] %= m;
 		}	
+		if(n > m){
+			printf("YES\n");
+		}else{
+			memset(dp, -1, sizeof dp);
+			bool ans = solve(0, 0, 0);
+
+			printf("%s\n", ans == true ? "YES": "NO");
+		}
 	}
 	
 	

@@ -95,6 +95,7 @@ int main(){
 				// printf("hello\n");
 				//ambil dari yang paling besar
 				s1.erase(pertama);
+				satu.erase(pertama); //this is the bug of not deleting the element of only having length 1
 				//find next bil pasangan yang terdekat dengan pertama dan selisihnya > 2..klo ga ada...pilih yang selisihnya 2 terdekat
 				if(s3.size()){
 					// printf("halo\n");
@@ -118,12 +119,16 @@ int main(){
 					s1.insert(ii(pas.first+1, pas.second));
 					satu.insert(ii(pas.first+1, pas.second));
 				}else if(satu.size()){
-					satu.erase(pertama);
-					ii pas = *satu.begin();
-					// printf("pas: %d %d\n",pas.first, pas.second);
-					satu.erase(pas);
-					s1.erase(pas);
-
+					// printf("erased pertama: %d %d\n",pertama.first, pertama.second);
+					if(satu.size()){
+						ii pas = *satu.begin();
+						// printf("pas: %d %d\n",pas.first, pas.second);
+						satu.erase(pas);
+						// printf("halo\n");
+						s1.erase(pas);
+						// printf("halo1\n");	
+					}
+					
 				}
 				
 				

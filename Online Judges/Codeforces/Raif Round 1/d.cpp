@@ -17,105 +17,71 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int a[100001];
-int col[100001], row[100001];
-bool done[100002];
 
 int main(){
 	int n,i,j;
 	while(scanf("%d",&n)!=EOF){
-		for(i=0;i<=100000;i++){
-			col[i] = row[i] = 0;
-			done[i] = false;
-		}
-		set<int> idx[3];
-		set<int>::iterator it, it1, it2;
-
+		set<ii> ans;
+		set<ii>::iterator it;
 		for(i=1;i<=n;i++){
 			scanf("%d",&a[i]);
-			if(a[i] <= 2){
-				idx[a[i]].insert(i);
+		}
+		bool valid = true;
+		int idx = 1;
+		queue<ii> q[4];
+		for(i=1;i<=n;i++){
+			if(a[i] == 3){
+				//cari ada ga yang 3
+				if(q[3].size()) {
+					ii pas = q[3].front(); q[3].pop();
+					int row = pas.first, col = pas.second;
+					ans.insert(ii(row, i)); ans.insert(ii(idx, i));
+					q[3].push(ii(idx,i));
+					idx++;
+				}else{
+					q[3].push(ii(idx, i));
+					ans.insert(ii(idx, i));
+					idx++;
+				}
+			}else if(a[i] == 2) {
+				q[2].push(ii(idx, i));
+				ans.insert(ii(idx, i));
+				if(q[3].size()){
+					ii pas = q[3].front(); q[3].pop();
+					int row = pas.first, col = pas.second;
+					ans.insert(ii(row, i)); ans.insert(ii(idx, i));
+				}
+				idx++;
+			}else if(a[i] == 1){
+				if(q[2].size()){//prioritas ke 2 karena 2 cuman bs dipasangin dengan 1
+					ii pas = q[2].front(); q[2].pop();
+					int row = pas.first, col = pas.second;
+					ans.insert(ii(row, i));
+				} else if(q[3].size()){
+					ii pas = q[3].front(); q[3].pop();
+					int row = pas.first, col = pas.second;
+					ans.insert(ii(row, i)); ans.insert(ii(idx, i));
+				} else {
+					ans.insert(ii(idx, i));
+				}
+				idx++;
 			}
 		}
-		vii ans;
-		bool valid = true;
-		int row = 1;
-		for(i=1;i<=n;i++){
-			if(done[i]){continue;}
-			if(a[i] == 0){
 
-			}else if(a[i] == 1){
-				ans.pb(ii(row, i));
-				row++;
-			}else if(a[i] == 2){
-				//pasangkan dengan angka 1 di kanan
-				it = idx[1].lower_bound(i);
-				if(it == idx[1].end()){
-					valid = false;
-					break;
-				}
-				int nextIdx = *it;
-				idx[1].erase(nextIdx);
-				ans.pb(ii(row, i));
-				ans.pb(ii(row, nextIdx));
-				done[nextIdx] = true;
-				done[i] = true;
-				row++;
-			}else{
-				//pasangkan dengan angka 1 atau 2 di kanan
-				it1 = idx[1].lower_bound(i);
-				if(it1 == idx[1].end()){
-					it2 = idx[2].lower_bound(i);
-					if(it2 == idx[2].end()){
-						valid = false;
-						break;
-					}else{
-						int nextCol = *it2;
-						idx[2].erase(nextCol);
-						ans.pb(ii(row, i));
-						ans.pb(ii(row, nextCol));
-						ans.pb(ii(row+1, nextCol));
-						row+=2;
-						// done[nextCol] = true;
-						// done[i] = true;
-					}
-				}else{
-					int nextIdx1 = *it1;
-					it2 = idx[2].lower_bound(i);
-					if(it2 == idx[2].end()){
-						idx[1].erase(nextIdx1);
-						ans.pb(ii(row, i));
-						ans.pb(ii(row, nextIdx1));
-						ans.pb(ii(row+1, nextIdx1));
-						row+=2;
-						done[nextIdx1] = true;
-					}else{
-						int nextIdx2 = *it2;
-						int minim = min(nextIdx1, nextIdx2);
-						if(minim == nextIdx1) {
-							idx[1].erase(nextIdx1);
-							ans.pb(ii(row, i));
-							ans.pb(ii(row, nextIdx1));
-							ans.pb(ii(row+1, nextIdx1));
-							row += 2;
-							done[nextIdx1] = true;
-						}else{
-							idx[2].erase(nextIdx2);
-							ans.pb(ii(row, i));
-							ans.pb(ii(row, nextIdx2));
-							ans.pb(ii(row+1, nextIdx2));
-							row+=2;
-						}
-					}
-				}
+		for(i=0;i<=3;i++){
+			if(q[i].size()){
+				valid = false;
+				break;
 			}
 		}
 		if(!valid){
 			printf("-1\n");
 		}else{
-			int n = ans.size();
-			printf("%d\n",n);
-			for(i=0;i<n;i++){
-				printf("%d %d\n",ans[i].first, ans[i].second);
+			int sz = ans.size();
+			printf("%d\n",sz);
+			for(it = ans.begin(); it!=ans.end();it++){
+				ii pas = *it;
+				printf("%d %d\n",pas.first, pas.second);
 			}
 		}
 	}

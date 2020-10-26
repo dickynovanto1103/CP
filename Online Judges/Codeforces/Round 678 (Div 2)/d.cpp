@@ -13,13 +13,13 @@ using namespace std;
 #define debug if(true)
 typedef long long ll;
 typedef vector<int> vi;
-typedef pair<ll,int> ii;
+typedef pair<ll,ll> ii;
 typedef pair<ii,int> iii;
 typedef vector<ii> vii;
 typedef vector<iii> viii;
 
 vector<vi> adj;
-const int maxn = 2e5 + 5;
+const int maxn = 4e5 + 5;
 ll leaf[maxn];
 ll a[maxn];
 ll maks[maxn];
@@ -40,9 +40,12 @@ void solve(int node, int p){
 			if(leaf[node] == 1){
 				maks[node] += maks[v];
 			}else{
+				assert(leaf[node] > 0);
 				//hitung maks[node] dari maks semua child, terus ditambah sama a[node] yang didistribute ke leaf[node]
 				list.pb(iii(ii(selisih[v], maks[v]), v));
 			}
+		} else {
+			assert(false);
 		}
 	}
 
@@ -66,6 +69,8 @@ void solve(int node, int p){
 		totSelisih += diff;
 		// printf("totSelisih jadi: %lld\n",totSelisih);
 		ll selisihMaks = maksimum - maksSekarang;
+		assert(selisihMaks >= 0);
+		assert(leafSekarang >= 1);
 		// printf("maksimum: %lld maksSekarang: %lld selisihMaks: %lld\n", maksimum, maksSekarang, selisihMaks);
 		totSelisih += (leafSekarang * selisihMaks);
 		// printf("totSelisih: %lld leafSekarang: %lld, selisihMaks: %lld\n",totSelisih, leafSekarang, selisihMaks);
@@ -83,8 +88,9 @@ void solve(int node, int p){
 		//distribute among leaf[node]
 		ll maksTambah = (a[node] + leaf[node] - 1) / leaf[node];
 		// 7 / 3 = 3 2 2
+		// 9 / 4 = 3 2 2 2
 		ll jumlahMaks = a[node] % leaf[node];
-		ll jumlahMinim = leaf[node] - (jumlahMaks);
+		ll jumlahMinim = leaf[node] - jumlahMaks;
 		maksSekarang += maksTambah;
 		totSelisih = jumlahMinim;
 	}
@@ -108,11 +114,10 @@ int main(){
 	
 	while(scanf("%d",&n) != EOF) {
 		adj.assign(n+1, vi());
-		for(i=1;i<=n;i++){
-			leaf[i] = 0;
-			selisih[i] = 0;
-			maks[i] = 0;
-		}
+		memset(leaf, 0, sizeof leaf);
+		memset(selisih, 0, sizeof selisih);
+		memset(maks, 0, sizeof maks);
+		
 		for(i=2;i<=n;i++){
 			int p;
 			scanf("%d",&p);
@@ -123,7 +128,11 @@ int main(){
 		}
 		solveLeaf(1, -1);
 		solve(1, -1);
-		printf("%lld\n",maks[1]);
+		ll ans = 0;
+		for(i=1;i<=n;i++){
+			ans = max(ans, maks[i]);
+		}
+		printf("%lld\n",ans);
 	}
 	
 

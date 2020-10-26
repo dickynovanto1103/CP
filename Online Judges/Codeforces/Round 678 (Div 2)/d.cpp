@@ -37,13 +37,7 @@ void solve(int node, int p){
 		int v = adj[node][i];
 		if(v != p){
 			solve(v, node);
-			if(leaf[node] == 1){
-				maks[node] += maks[v];
-			}else{
-				assert(leaf[node] > 0);
-				//hitung maks[node] dari maks semua child, terus ditambah sama a[node] yang didistribute ke leaf[node]
-				list.pb(iii(ii(selisih[v], maks[v]), v));
-			}
+			list.pb(iii(ii(selisih[v], maks[v]), v));
 		} else {
 			assert(false);
 		}
@@ -92,7 +86,12 @@ void solve(int node, int p){
 		ll jumlahMaks = a[node] % leaf[node];
 		ll jumlahMinim = leaf[node] - jumlahMaks;
 		maksSekarang += maksTambah;
-		totSelisih = jumlahMinim;
+		if(jumlahMinim == leaf[node]){
+			totSelisih = 0;
+		}else{
+			totSelisih = jumlahMinim;	
+		}
+		
 	}
 	maks[node] = maksSekarang;
 	selisih[node] = totSelisih;
@@ -128,11 +127,10 @@ int main(){
 		}
 		solveLeaf(1, -1);
 		solve(1, -1);
-		ll ans = 0;
-		for(i=1;i<=n;i++){
-			ans = max(ans, maks[i]);
-		}
-		printf("%lld\n",ans);
+		// for(i=1;i<=n;i++){
+		// 	printf("i: %d maks: %lld selisih: %lld leaf: %lld\n", i, maks[i], selisih[i], leaf[i]);
+		// }
+		printf("%lld\n",maks[1]);
 	}
 	
 

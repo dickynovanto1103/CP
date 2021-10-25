@@ -12,13 +12,25 @@ using namespace std;
 #define FastSlowInput ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #define debug if(true)
 typedef long long ll;
-// typedef __int128_t lll;
 typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	
+	int tc = 80;
+	printf("%d\n",tc);
+	srand(time(NULL));
+	char arr[] = {'F', 'O', 'X'};
+	for(int tt=1;tt<=tc;tt++){
+		int n = 800000;
+		printf("%d\n",n);
+		for(int i=0;i<n;i++){
+			int num = rand() % 3;
+			printf("%c", arr[num]);
+		}
+		printf("\n");
+		
+	}
 	
 	return 0;
 };

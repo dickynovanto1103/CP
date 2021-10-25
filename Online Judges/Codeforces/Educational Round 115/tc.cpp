@@ -12,13 +12,21 @@ using namespace std;
 #define FastSlowInput ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #define debug if(true)
 typedef long long ll;
-// typedef __int128_t lll;
 typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	
+	int tc = 2;
+	printf("%d\n", tc);
+	while(tc--){
+		int n = 200000;
+		printf("%d\n", n);
+		for(int i=0;i<n;i++){
+ 			printf("%d ", inf);
+		}
+		puts("");
+	}
 	
 	return 0;
 };

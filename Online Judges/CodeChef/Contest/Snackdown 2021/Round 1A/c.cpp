@@ -18,7 +18,13 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 int main(){
-	
+	int tc,i,j,n,k;
+	scanf("%d",&tc);
+	while(tc--){
+		scanf("%d %d",&n, &k);
+		int maksScore = (n-1) * 2;
+		printf("%d\n", maksScore - ((k / 2) * 2));
+	}
 	
 	return 0;
 };

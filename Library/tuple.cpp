@@ -17,20 +17,9 @@ typedef pair<int,int> ii;
 typedef tuple<int,int,int> tiii;
 typedef vector<ii> vii;
 
-struct compare{
-	bool operator() (const int &a, const int &b) const{
-		return a < b;
-	}
+int main(){
+	tiii a = make_tuple(1, 2, 3);
+	printf("a: %d %d %d\n", get<0>(a), get<1>(a), get<2>(a));
+	
+	return 0;
 };
-
-int main() {
-	set<int,compare> s;
-	s.insert(1);
-	s.insert(34);
-	s.insert(4);
-	set<int,compare>::iterator it;
-	for(it=s.begin(); it!=s.end();it++){
-		printf("%d\n", *it);
-	}
-}
-

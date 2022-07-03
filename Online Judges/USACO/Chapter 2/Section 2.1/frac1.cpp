@@ -1,3 +1,9 @@
+/*
+ID: dickyno1
+LANG: C++14
+TASK: frac1
+*/
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -12,25 +18,35 @@ using namespace std;
 #define FastSlowInput ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #define debug if(true)
 typedef long long ll;
+// typedef __int128_t lll;
 typedef vector<int> vi;
 typedef pair<int,int> ii;
-typedef tuple<int,int,int> tiii;
 typedef vector<ii> vii;
 
-struct CustomComparator {
-	bool operator()(const int &a, const int &b) {
-		return a < b;
-	}
-};
+bool cmp(ii a, ii b) {
+	return a.first * b.second < a.second * b.first;
+}
 
 int main(){
-	priority_queue<int, vi, CustomComparator> pq;
-	pq.push(1);
-	pq.push(23);
-	pq.push(4);
-	while(!pq.empty()) {
-		printf("%d\n", pq.top()); pq.pop();
+	freopen("frac1.in", "r", stdin);
+	freopen("frac1.out", "w", stdout);
+
+	vii v;
+	int n,i,j;
+	scanf("%d",&n);
+	for(i=1;i<=n;i++){
+		for(j=0;j<=i;j++){
+			if(__gcd(i, j) == 1){
+				v.pb(ii(j,i));
+			}
+		}
 	}
+
+	sort(v.begin(), v.end(), cmp);
+	for(int i=0;i<v.size();i++){
+		printf("%d/%d\n", v[i].first, v[i].second);
+	}
+
 	
 	return 0;
 };

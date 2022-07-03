@@ -12,25 +12,35 @@ using namespace std;
 #define FastSlowInput ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #define debug if(true)
 typedef long long ll;
+// typedef __int128_t lll;
 typedef vector<int> vi;
 typedef pair<int,int> ii;
-typedef tuple<int,int,int> tiii;
 typedef vector<ii> vii;
 
-struct compare{
-	bool operator() (const int &a, const int &b) const{
-		return a < b;
+map<string, int> mapper;
+bool isTrue[100019];
+
+int main(){
+	int n,m,i,j;
+	scanf("%d %d",&n,&m);
+	string a[100010], b[100010];
+	for(int i=0;i<n;i++){
+		cin>>a[i];
+		mapper[a[i]] = i;
 	}
+	for(int i=0;i<m;i++){
+		cin>>b[i];
+		int idx = mapper[b[i]];
+		isTrue[idx] = true;
+	}
+
+	for(int i=0;i<n;i++){
+		if(isTrue[i]){
+			puts("Yes");
+		}else{
+			puts("No");
+		}
+	}
+	
+	return 0;
 };
-
-int main() {
-	set<int,compare> s;
-	s.insert(1);
-	s.insert(34);
-	s.insert(4);
-	set<int,compare>::iterator it;
-	for(it=s.begin(); it!=s.end();it++){
-		printf("%d\n", *it);
-	}
-}
-

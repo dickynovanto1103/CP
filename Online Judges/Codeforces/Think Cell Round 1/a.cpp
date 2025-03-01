@@ -18,7 +18,20 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 void solve(){
+	int n;
+	scanf("%d",&n);
+	vector<int> v(2*n, 0);
+	for(int i=0;i<2*n;i++){
+		scanf("%d",&v[i]);
+	}
 
+	sort(v.begin(), v.end());
+	int ans = 0;
+	for(int i=0;i<2*n;i+=2){
+		ans += v[i];
+	}
+
+	printf("%d\n", ans);
 }
 
 int main(){

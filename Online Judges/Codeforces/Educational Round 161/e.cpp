@@ -18,7 +18,27 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 void solve(){
+	ll x;
+	scanf("%lld",&x);
+	vi ans;
+	int maks = 1000, min = 0;
+	while(x > 1) {
+		if(x % 2 == 0) {
+			//I can put maximum number at the end of our answer
+			ans.pb(maks--);
+			x /= 2;
+		}else{
+			ans.pb(min++);
+			x--;
+		}
+	}
 
+	reverse(ans.begin(), ans.end());
+	printf("%d\n", ans.size());
+	for(int a: ans) {
+		printf("%d ", a);
+	}
+	puts("");
 }
 
 int main(){

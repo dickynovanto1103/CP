@@ -17,16 +17,24 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-void solve(){
-
-}
-
 int main(){
-	int tc = 1;
-	scanf("%d",&tc);
-	while(tc--){
-		solve();
-	}
+	string s = "mrbhia";
+	sort(s.begin(), s.end());
+	int n, hurufBerapa;
+	char c;
+	cin>>n>>hurufBerapa>>c;
+	do{
+		if(s[hurufBerapa - 1] == c) {
+			for(int i=0;i<n;i++){
+				cout<<s[i];	
+			}
+			cout<<endl;
+			
+		}
 
+		// cout<<s<<endl;
+		
+	}while(next_permutation(s.begin(), s.end()));
+	
 	return 0;
 };

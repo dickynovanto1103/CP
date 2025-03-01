@@ -17,13 +17,37 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-void solve(){
+int a[300001];
+int belakang[300001];
+int first;
 
+void solve(){
+	int n;
+
+	while(cin>>n) {
+		for(int i=1;i<=n;i++){
+			scanf("%d",&a[i]);
+			if(a[i] == -1) {
+				first = i;
+			}else{
+				belakang[a[i]] = i;
+			}
+		}
+
+		printf("%d",first);
+		int person = first;
+		for(int i=0;i<n-1;i++){
+			person = belakang[person];
+			printf(" %d", person);
+		}
+
+		puts("");
+	}
 }
 
 int main(){
 	int tc = 1;
-	scanf("%d",&tc);
+	// scanf("%d",&tc);
 	while(tc--){
 		solve();
 	}

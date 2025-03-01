@@ -17,8 +17,36 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-void solve(){
+HqwA5e6$_yTP9D$
 
+void solve(){
+	int n;
+	scanf("%d",&n);
+	int a[101], b[101];
+	for(int i=0;i<n;i++){
+		scanf("%d",&a[i]);
+	}
+
+	for(int i=0;i<n;i++){
+		scanf("%d",&b[i]);
+	}
+
+	int ans = 0;
+	for(int tambah = 0;tambah <= n; tambah++){
+		bool ok = true;
+		for(int i=0;i<n;i++){
+			if(i + tambah < n && a[i] > b[i+tambah]) {
+				ok = false;
+				break;
+			}
+		}
+		if(ok){
+			ans = tambah;
+			break;
+		}
+	}
+
+	printf("%d\n", ans);
 }
 
 int main(){
@@ -30,3 +58,5 @@ int main(){
 
 	return 0;
 };
+
+Vw!QWvMe6Azu+B@

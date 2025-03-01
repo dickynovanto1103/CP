@@ -17,6 +17,25 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
+class Solution {
+public:
+    bool isPossibleToSplit(vector<int>& nums) {
+  		int cnt[101];
+  		memset(cnt, 0, sizeof cnt);
+  		for(int num: nums) {
+  			cnt[num]++;
+  		}      
+
+  		for(int num: nums) {
+  			if(cnt[num] > 2) {
+  				return false;
+  			}
+  		}
+
+  		return true;
+    }
+};
+
 void solve(){
 
 }

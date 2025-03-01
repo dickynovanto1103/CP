@@ -18,7 +18,17 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 void solve(){
-
+	int a, b;
+	scanf("%d %d",&a,&b);
+	if(a % 2 == 1) {
+		puts("No");
+	}else{
+		if(b % 2 == 0){puts("Yes");}
+		else{
+			if(a == 0){puts("No");}
+			else{puts("Yes");}
+		}
+	}
 }
 
 int main(){

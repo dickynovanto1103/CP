@@ -17,15 +17,26 @@ typedef vector<int> vi;
 typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
-void solve(){
-
-}
+class Solution {
+public:
+    long long flowerGame(int n, int m) {
+        return (n/2 * ((m + 1) / 2)) + (((n + 1) / 2) * (m / 2));
+    }
+};
 
 int main(){
-	int tc = 1;
-	scanf("%d",&tc);
-	while(tc--){
-		solve();
+	// int tc = 1;
+	// scanf("%d",&tc);
+	// while(tc--){
+	// 	solve();
+	// }
+
+	Solution s;
+	int n, m;
+	while(scanf("%d %d",&n, &m)!=EOF) {
+
+		ll ans = s.flowerGame(n, m);
+		printf("%lld\n", ans);
 	}
 
 	return 0;

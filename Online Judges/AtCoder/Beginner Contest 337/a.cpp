@@ -18,12 +18,28 @@ typedef pair<int,int> ii;
 typedef vector<ii> vii;
 
 void solve(){
+	int n;
+	scanf("%d",&n);
+	int suma = 0, sumb = 0;
+	int a, b;
+	while(n--){
+		scanf("%d %d",&a,&b);
+		suma += a;
+		sumb += b;
+	}
 
+	if(suma > sumb) {
+		puts("Takahashi");
+	}else if(suma < sumb) {
+		puts("Aoki");
+	}else{
+		puts("Draw");
+	}
 }
 
 int main(){
 	int tc = 1;
-	scanf("%d",&tc);
+	// scanf("%d",&tc);
 	while(tc--){
 		solve();
 	}

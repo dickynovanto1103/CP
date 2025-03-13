@@ -29,7 +29,6 @@ void putIntoDigits(int idx, int v) {
 }
 
 void stableSortDigits(int n) {
-	digits.assign(n+1, vi(11, 0));
 	tempOutput.assign(n+1, vi(11, 0));
 	//process dari idx ke 10 sampe ke 0
 	for(int idx=10;idx>=0;idx--){
@@ -39,13 +38,12 @@ void stableSortDigits(int n) {
 			cnt[digits[i][idx]]++;
 		}
 
-		for(int i=0;i<10;i++){
+		for(int i=1;i<10;i++){
 			cnt[i] = cnt[i] + cnt[i-1];
 		}
 
 		for(int i=n-1;i>=0;i--){
-			//utk digits[i][idx], mau ditaruh di idx mana, tergantung cnt[digits[i][idx]] - 1
-			int placedIdx = cnt[digits[i][idx]] - 1;
+			int placedIdx = --cnt[digits[i][idx]];
 			tempOutput[placedIdx] = digits[i];
 		}
 
@@ -53,25 +51,28 @@ void stableSortDigits(int n) {
 			digits[i] = tempOutput[i];
 		}
 	}
-
-	for(int i=0;i<n;i++){
-		for(int j=0;j<10;j++){
-			printf("%d ",digits[i][j]);
-		}
-		puts("");
-	}
 }
 
 void solve(){
 	int n;
 	scanf("%d",&n);
 	int a[100];
+	digits.assign(n+1, vi(11, 0));
 	for(int i=0;i<n;i++) {
 		scanf("%d",&a[i]);
 		putIntoDigits(i, a[i]);
 	}
 
-	for(int i=0;i<10;i++){
+	for(int i=0;i<n;i++){
+		for(int j=0;j<11;j++){
+			printf("%d ", digits[i][j]);
+		}
+		puts("");
+	}
+
+	stableSortDigits(n);
+
+	for(int i=0;i<n;i++){
 		for(int j=0;j<11;j++){
 			printf("%d ", digits[i][j]);
 		}

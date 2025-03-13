@@ -59,4 +59,3 @@ int main(){
 	return 0;
 };
 
-Vw!QWvMe6Azu+B@

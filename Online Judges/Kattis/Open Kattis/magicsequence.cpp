@@ -19,9 +19,10 @@ typedef vector<ii> vii;
 
 int v[1000001];
 
-int digits[1000001][2], res[1000001], tempOutput[1000001][2];
+int digits[1000001][2], res[1000001], tempOutput[1000001];
 
-const int base = 31623;
+const int base = (1<<15);
+const int baseLog2 = 15;
 int cnt[base + 1];
 
 void putIntoDigits(int idx, int v) {
@@ -41,6 +42,7 @@ void stableSortDigits(int n) {
 		// do counting sort
 		
 		for(int i=0;i<n;i++){
+			digits[i][idx] = (v[i]>>((1 - idx) * baseLog2)) & (base - 1);
 			cnt[digits[i][idx]]++;
 		}
 
@@ -50,14 +52,19 @@ void stableSortDigits(int n) {
 
 		for(int i=n-1;i>=0;i--){
 			int placedIdx = --cnt[digits[i][idx]];
-			memcpy(tempOutput[placedIdx], digits[i],2 * sizeof(int));
+			tempOutput[placedIdx] = v[i];
+			// memcpy(tempOutput[placedIdx], digits[i],2 * sizeof(int));
 			// for(int j=0;j<2;j++){
 			// 	tempOutput[placedIdx][j] = digits[i][j];
 			// }
 		}
 
 
-		memcpy(digits, tempOutput, n * 2 * sizeof(int));
+		memcpy(v, tempOutput, n * sizeof(int));
+		// for(int i=0;i<n;i++){
+		// 	v[i] = tempOutput[i];
+		// }
+		// memcpy(digits, tempOutput, n * 2 * sizeof(int));
 		// for(int i=0;i<n;i++){
 		// 	for(int j=0;j<2;j++) {
 		// 		digits[i][j] = tempOutput[i][j];	
@@ -130,7 +137,7 @@ void solve(){
 	// printDigits(n);
 
 	// std::chrono::steady_clock::time_point begin2 = std::chrono::steady_clock::now();
-	convertBackToVector(n);
+	// convertBackToVector(n);
 	// std::chrono::steady_clock::time_point end2 = std::chrono::steady_clock::now();
 	// std::cout << "Time generate res difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(end2 - begin2).count() << "[ms]" << std::endl;
 	// printf("res after sorted\n");
@@ -141,7 +148,7 @@ void solve(){
 
 	ll hash = 0;
 	for(int i=0;i<n;i++){
-		hash = (((hash % y) * (x % y)) % y + (res[i] % y)) % y;
+		hash = (((hash) * ((ll)x)) % y + (v[i])) % y;
 	}
 	printf("%lld\n", hash);
 }

@@ -21,12 +21,17 @@ void solve(){
 	///when any of row / column is 1...then the answer is row / column that is > 1 or 1 if row = column = 1
 	// if row = column = 2..answer is 4
 	// if any of row / column = 2...and if the other dimension is 2/3, answer is 4...else...general rules applies
+	// no actually if one of them is 2...there is special rule...because for 2x6...the answer is 8...
+	// xx..xx
+	// xx..xx
 
 	// x.x.
 	// .x.x -> this one should be 4 only...so if the column / row count is 4, while the other dimension is 2...then no special rule
 
 	// x.x.x
 	// .x.x.
+
+
 
 	// .x.
 	// x.x
@@ -61,28 +66,24 @@ void solve(){
 	int r,c;
 	while(scanf("%d %d",&r,&c), (r||c)) {
 		if(r == 0 || c == 0) {
-			printf("0 knights");
+			printf("0");
 		} else if(r == 1 || c == 1) {
 			int maks = max(r, c);
 			printf("%d",maks);
-			if(maks <= 1) {
-				printf(" knight");
-			}else{
-				printf(" knights");
-			}
 		}else if(r == 2 || c == 2) {
 			int maks = max(r, c);
-			if(maks <= 3) {
-				printf("4 knights");
-			}else{
-				printf("%d knights",r*c/2);
+			int maksScore = ((maks + 3) / 4) * 2;
+			if(maks % 4 == 1) {
+				maksScore--;
 			}
+			printf("%d", maksScore*2);
+
 		}else{
-			printf("%d knights",(((r * c) + 1) / 2));
+			printf("%d",(((r * c) + 1) / 2));
 		}
 
 
-		printf(" may be placed on a %d row %d column board.\n", r,c);
+		printf(" knights may be placed on a %d row %d column board.\n", r,c);
 	}
 }
 

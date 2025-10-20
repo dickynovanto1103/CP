@@ -15,6 +15,7 @@ typedef long long ll;
 // typedef __int128_t lll;
 typedef vector<int> vi;
 typedef pair<int,int> ii;
+typedef pair<int,string> is;
 typedef vector<ii> vii;
 
 unordered_map<char, int> value = {
@@ -71,6 +72,17 @@ bool isAnyNumberExceeds3Times(vi breakdowns) {
 	return false;
 }
 
+bool is5OnlyOnce(string s) {
+	int cnt5 = 0, cnt50 = 0, cnt500 = 0;
+	for(int i=0;i<s.size();i++){
+		if(s[i] == 'V') {cnt5++;}
+		else if(s[i] == 'L') {cnt50++;}
+		else if(s[i] == 'D') {cnt500++;}
+	}
+
+	return cnt5 <= 1 && cnt50 <= 1 && cnt500 <= 1;
+}
+
 bool isValidMinus(vi breakdowns) {
 	int shouldBeSmallerThan = inf;
 	for(int i=0;i<breakdowns.size();i++){
@@ -81,27 +93,43 @@ bool isValidMinus(vi breakdowns) {
 		}
 
 		if(cur == 900 || cur == 400) {shouldBeSmallerThan = 100;}
-		else if(cur == 500){shouldBeSmallerThan = 400;}
 		else if(cur == 90 || cur == 40) {shouldBeSmallerThan = 10;}
-		else if(cur == 50){shouldBeSmallerThan = 40;}
 		else if(cur == 9 || cur == 4) {shouldBeSmallerThan = 1;}
-		else if(cur == 5){shouldBeSmallerThan = 4;}
 	}
 
 	return true;
 }
 
+bool isValidMinusCheck(string s, int i) {
+	string value = s.substr(i, 2);
+	// cout<<"value: "<< value<<endl;
+	//CD, CM, XC, XL, IV, IX
+	return value == "CD" || value == "CM" || value == "XC" || value == "XL" || value == "IV" || value == "IX";
+}
+
 bool isValidRomanNumeral(string s) {
+	if(!is5OnlyOnce(s)){
+		return false;
+	}
 	vi breakdowns;
 	//it's safe to do so because s[s.size()] == '\0', which translate to false
 	for(int i=0; s[i]; i++){
 		if(s[i+1] && value[s[i+1]] > value[s[i]]) {
+			if(!isValidMinusCheck(s, i)) {
+				return false;
+			}
 			breakdowns.pb(value[s[i+1]] - value[s[i]]);
 			i++;
 		}else{
 			breakdowns.pb(value[s[i]]);
 		}
 	}
+
+	// printf("breakdowns:");
+	// for(int val: breakdowns) {
+	// 	printf(" %d", val);
+	// }
+	// puts("");
 
 	for(int i=0;i<breakdowns.size();i++){
 		if(!isValueValid[breakdowns[i]]) {
@@ -141,9 +169,84 @@ int rToA(string s) {
 	return res;
 }
 
+//MMMDCCCLXXXVIII
+
+char romans[] = {'M', 'D', 'C', 'L', 'X', 'V', 'I'};
+
+vector<is> valToRoman = {
+	{1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"},
+	{100, "C"}, {90, "XC"}, {50, "L"}, {40, "XL"},
+	{10, "X"}, {9, "IX"}, {5, "V"}, {4, "IV"},
+	{1, "I"},
+};
+
+string aToR(int n) {
+	string res;
+	for(auto &[value, str]: valToRoman) {
+		while(n >= value) {
+			n -= value;
+			res += str;
+		}
+	}
+
+	return res;
+}
+
+void validate(string s) {
+	int res = rToA(s);
+	printf("res: %d\n", res);
+	if(res >= 4000) {
+		if(isValidRomanNumeral(s)){
+			cout<<"res >= 4000, but considered as valid, s: "<<s<<endl;
+			assert(false);
+		}
+		return;
+	}
+	string expectedRomanStr = aToR(res);
+	cout<<"s: "<<s<<" expectedRomanStr: "<<expectedRomanStr<<endl;
+	if(s == expectedRomanStr) {
+		if(!isValidRomanNumeral(s)) {
+			cout<<"SAME but INVALID s: "<<s<<" expectedRomanStr: "<<expectedRomanStr<<" but s is not valid"<<endl;
+			assert(false);
+		}
+	}else {
+		if(isValidRomanNumeral(s)) {
+			cout<<"NOT SAME but VALID s: "<<s<<" expectedRomanStr: "<<expectedRomanStr<<" but s is valid"<<endl;
+			assert(false);
+		}
+	}
+}
+
+void genRomanWithDigit(int numDigit, string curStr) {
+	if(curStr.size() == numDigit) {
+		// printf("numDigit: %d curStr: ", numDigit); cout<<curStr<<endl;
+		validate(curStr);
+		return;
+	}
+	for(int i=0;i<7;i++) {
+		genRomanWithDigit(numDigit, curStr + romans[i]);
+	}
+	
+}
+
+void genRomanAndValidate(int numDigit) {
+	genRomanWithDigit(numDigit, "");
+}
+
+void genAndVerify() {
+	for(int numDigit = 1;numDigit <= 15;numDigit++) {
+		genRomanAndValidate(numDigit);
+	}
+}
+
+
 void solve(){
 	string s;
-	while(cin>>s) {
+	while(getline(cin, s)) {
+		if(s.size() == 0){
+			puts("0");
+			continue;
+		}
 		if(!isValidRomanNumeral(s)) {
 			puts("This is not a valid number");
 			continue;
@@ -156,6 +259,7 @@ void solve(){
 
 int main(){
 	int tc = 1;
+	// genAndVerify();
 	// scanf("%d",&tc);
 	while(tc--){
 		solve();

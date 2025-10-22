@@ -22,7 +22,7 @@ void solve(){
 	scanf("%d",&n);
 	string s;
 	cin>>s;
-	cout<<s<<endl;
+	// cout<<s<<endl;
 	if(s[n-1] == 'A') {
 		puts("Alice");
 		return;

@@ -74,12 +74,23 @@ int formInteger(string s, unordered_map<char, int> mapper) {
 		ans += mapper[c];
 	}
 
-	cout<<s<<" "<<ans<<endl;
+	// cout<<s<<" "<<ans<<endl;
 
 	return ans;
 }
 
-void getRes(string s1, string s2, string right, vector<char> chars, int lenUniqueChars, int mask) {
+void printBinary(int mask) {
+	for(int i=0;i<10;i++){
+		if(mask & (1<<i)) {
+			printf("1");
+		}else{
+			printf("0");
+		}
+	}
+	puts("");
+}
+
+void getRes(string s1, string s2, string right, vector<char> chars, int lenUniqueChars, int mask, int startIdx) {
 	if(correctAns == 2) {
 		return;
 	}
@@ -94,13 +105,16 @@ void getRes(string s1, string s2, string right, vector<char> chars, int lenUniqu
 		}
 
 		do {
+			// printBinary(mask);
+			// printf("mask: %d, printing el:", mask);
 			unordered_map<char, int> mapper;
-			unordered_map<char, int>::iterator it;
 			for(int i=0;i<chars.size();i++) {
 				char c = chars[i];
 				mapper[c] = ones[i];
+				// printf(" %d", ones[i]);
 				// printf("mapper[%c]: %d\n", c, mapper[c]);
 			}
+			// puts("");
 
 			if(isBeginZero(s1, mapper) || isBeginZero(s2, mapper) || isBeginZero(right, mapper)) {
 				// printf("continue here\n");
@@ -109,10 +123,14 @@ void getRes(string s1, string s2, string right, vector<char> chars, int lenUniqu
 
 			if(formInteger(s1, mapper) + formInteger(s2, mapper) == formInteger(right, mapper)) {
 				correctAns++;
-				printf("correctAns: %d\n", correctAns);
-				for(it=mapper.begin();it!=mapper.end();it++){
-					printf("char: %c mapped to integer: %d\n", *it->first, *it->second);
-				}
+				// printf("correctAns: %d\n", correctAns);
+				// for(int el: ones) {
+				// 	printf("%d ", el);
+				// }
+				// puts("");
+				// for(auto const& pair: mapper) {
+				// 	printf("char: %c mapped to integer: %d\n", pair.first, pair.second);
+				// }
 				if(correctAns == 2) {
 					break;
 				}
@@ -123,9 +141,9 @@ void getRes(string s1, string s2, string right, vector<char> chars, int lenUniqu
 		return;
 	}
 
-	for(int i=0;i<10;i++){
+	for(int i=startIdx;i<10;i++){
 		if(!(mask & (1<<i))) {
-			getRes(s1, s2, right, chars, lenUniqueChars, mask | (1<<i));
+			getRes(s1, s2, right, chars, lenUniqueChars, mask | (1<<i), i);
 			if(correctAns == 2) {
 				break;
 			}
@@ -154,9 +172,9 @@ void tryAllCombination(string s1, string s2, string right) {
 	}
 
 	int lenOfUniqueChards = uniqueChars.size();
-	printf("lenOfUniqueChards: %d\n", lenOfUniqueChards);
+	// printf("lenOfUniqueChards: %d\n", lenOfUniqueChards);
 
-	getRes(s1, s2, right, uniqueChars, lenOfUniqueChards, 0);
+	getRes(s1, s2, right, uniqueChars, lenOfUniqueChards, 0, 0);
 }
 
 
@@ -165,8 +183,8 @@ void solve(){
 	while(cin>>exp, exp != "#") {
 		ss leftAndRight = getLeftAndRight(exp, '=');
 		ss leftValues = getLeftAndRight(leftAndRight.first, '+');
-		cout<<"TEST "<<leftAndRight.first<<"="<<leftAndRight.second<<endl;
-		cout<<"TESTING "<<leftValues.first<<"+"<<leftValues.second<<endl;
+		// cout<<"TEST "<<leftAndRight.first<<"="<<leftAndRight.second<<endl;
+		// cout<<"TESTING "<<leftValues.first<<"+"<<leftValues.second<<endl;
 
 		string ans1;
 		if(rToA(leftValues.first) + rToA(leftValues.second) == rToA(leftAndRight.second)) {

@@ -53,6 +53,8 @@ unordered_map<int, bool> isValueValid = {
 //these checks should be added:
 5. Multiple 5, 50, and 500 are not allowed...so VV, LL, DD
 6. 500+400 should not be allowed
+//lastly these checks I forgot
+7. "DM"...turns out check num 4 above I forgot to check, only checking like 99, but not like DM....should did specific character checks
 //better to form a vector of integer, then evaluate from this...
 IIII
 CCM, IIV

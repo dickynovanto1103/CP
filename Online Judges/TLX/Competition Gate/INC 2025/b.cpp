@@ -25,8 +25,8 @@ void solve(){
 		tt++;
 
 		int a[n+1];
-		int next[n+1];
-		memset(next, -1, sizeof next);
+		bool isVisited[n+10] = {false};
+
 		for(int i=0;i<n;i++){
 			scanf("%d",&a[i]);
 		}
@@ -42,34 +42,45 @@ void solve(){
 		}
 
 		bool done = edges.size() == m;
+		if(done) {
+			for(ii edge: edges) {
+				printf("%d %d\n", edge.first, edge.second);
+			}
+			continue;
+		}
 
-		int start = 0;
 		for(int i=0;i<n-1;i++){
-			if(a[i] > a[i+1]) {
-				for(int j=start;j<=i;j++){
-					//this is one group
-					next[j] = i;
+			int maxUnvisited = inf;
+			if(!isVisited[a[i+1]]) {
+				isVisited[a[i+1]] = true;
+				maxUnvisited = a[i+1];
+			}
+			for(int j=i+2;j<n;j++){
+				if(done) {
+					break;
 				}
-				start = i+1;
-			}
-
-			if(done) {
-				break;
-			}
-		}
-		for(int j=start;j<=n-1;j++){
-			next[j] = n-1;
-		}
-
-		for(int i=0;i<n-1;i++){
-			for(int j=i+2;j<=next[i+1];j++) {
-				if(!done) {
-					// printf("pushed additional: %d, %d\n", i,j);
-					edges.pb({a[i],a[j]});
+				if(isVisited[a[j]]) {
+					edges.pb(ii(a[i], a[j]));
 					done = edges.size() == m;
-					if(done){
-						break;
-					}
+					continue;
+				}
+
+				if(maxUnvisited == inf) {
+					maxUnvisited = a[j];
+					isVisited[a[j]] = true;
+					edges.pb(ii(a[i], a[j]));
+					done = edges.size() == m;
+				}else if(maxUnvisited > a[j]) {
+					break;
+				}else{
+					maxUnvisited = max(maxUnvisited, a[j]);
+					edges.pb(ii(a[i], a[j]));
+					isVisited[a[j]] = true;
+					done = edges.size() == m;
+				}
+
+				if(done) {
+					break;
 				}
 			}
 
@@ -77,6 +88,8 @@ void solve(){
 				break;
 			}
 		}
+
+		// printf("done: %d edge size: %d\n", done, edges.size());
 
 		if(!done) {
 			puts("-1 -1");

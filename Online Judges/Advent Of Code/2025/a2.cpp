@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define inf 1000000000
+#define unvisited -1
+#define visited 1
+#define eps 1e-9
+#define mp make_pair
+#define pb push_back
+#define pi acos(-1.0)
+#define uint64 unsigned long long
+#define FastSlowInput ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define debug if(true)
+typedef long long ll;
+// typedef __int128_t lll;
+typedef vector<int> vi;
+typedef pair<int,int> ii;
+typedef vector<ii> vii;
+
+void solve(){
+	string s;
+	int pos = 50;
+	int ans = 0;
+	while(cin>>s) {
+		int num = 0;
+		for(int i=1;i<s.size();i++){
+			num *= 10;
+			num += s[i] - '0';
+		}
+		if(s[0] == 'L') {
+			for(int i=0;i<num;i++){
+				pos--;
+				if(pos == 0) {
+					ans++;
+				}else if(pos < 0){
+					pos += 100;
+				}
+			}
+		}else{
+			for(int i=0;i<num;i++){
+				pos++;
+				pos %= 100;
+				if(pos == 0) {
+					ans++;
+				}
+			}
+			
+		}
+	}
+
+	printf("%d\n", ans);
+}
+
+int main(){
+	int tc = 1;
+	// scanf("%d",&tc);
+	while(tc--){
+		solve();
+	}
+
+	return 0;
+};

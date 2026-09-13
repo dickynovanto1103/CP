@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define inf 1000000000
+#define unvisited -1
+#define visited 1
+#define eps 1e-9
+#define mp make_pair
+#define pb push_back
+#define pi acos(-1.0)
+#define uint64 unsigned long long
+#define FastSlowInput ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define debug if(true)
+typedef long long ll;
+// typedef __int128_t lll;
+typedef vector<int> vi;
+typedef pair<int,int> ii;
+typedef vector<ii> vii;
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums){
+    	int ans = nums[0];
+    	int sum = 0;
+    	for(int num: nums) {
+    		if(sum < 0) {
+    			sum = 0;
+    		}
+    		sum += num;
+    		ans = max(ans, sum);
+    	}
+
+    	return ans;
+    }
+};
+
+void solve(){
+	Solution sol;
+	vi a = {-2,1,-3,4,-1,2,1,-5,4};
+	int ans = sol.maxSubArray(a);
+	printf("%d\n", ans);
+	a = {-1,-2};
+	printf("%d\n", sol.maxSubArray(a));
+}
+
+int main(){
+	int tc = 1;
+	// scanf("%d",&tc);
+	while(tc--){
+		solve();
+	}
+
+	return 0;
+};
